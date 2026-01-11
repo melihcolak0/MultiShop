@@ -1,8 +1,12 @@
 # 🛒 MultiShop E‑Commerce Microservice Projesi
 
-Bu proje, **Udemy üzerinden eşzamanlı takip edilen kapsamlı bir eğitim** doğrultusunda geliştirilmiş, **gerçek hayata yakın**, **kurumsal seviyede** bir **e‑ticaret mikroservis mimarisi** örneğidir. Amaç; sadece çalışan bir uygulama geliştirmek değil, aynı zamanda **ölçeklenebilir**, **bakımı kolay**, **güvenli** ve **modern backend mimarilerini** uçtan uca deneyimlemektir.
+Bu repository, Murat Yücedağ'ın Udemy'de bulunan Asp.Net Core MultiShop Mikroservis E-Ticaret Kursu'nu içermektedir. Bu eğitimde bana yol gösteren Murat Yücedağ'a çok teşekkür ederim.
 
-Udemy kursunu takip ederek geliştirdiğin proje, modern bir e-ticaret platformu olarak microservice mimarisi üzerine kurulu. Video başlıklarından yola çıkarak, projede kullanılan ana teknolojileri gruplayıp özetliyorum. Bu, backend (mikroservisler), veritabanları, frontend, altyapı araçları ve ek özellikler şeklinde ayrılabilir.
+ASP.NET Core 6.0 ve Web API teknolojilerini kullanarak MultiShop E‑Commerce Microservice Projesi'ni geliştirdim. Bu proje, ana sayfa (default), admin ve kullanıcı (user) paneli içeren tam kapsamlı bir e-ticaret ve yönetim sistemidir.
+
+Bu proje, **Udemy üzerinden eşzamanlı takip edilen kapsamlı bir eğitim** doğrultusunda geliştirilmiş, **gerçek hayata yakın**, **kurumsal seviyede** bir **e‑ticaret mikroservis mimarisi** örneğidir. Amaç; sadece çalışan bir uygulama geliştirmek değil, aynı zamanda **ölçeklenebilir**, **bakımı kolay**, **güvenli** ve **modern backend mimarilerini** uçtan uca deneyimlemektir Eksikler muhakkak vardır, burada amacım birçok teknoloji ile ileri seviye bir proje çıkarmaktır.
+
+Projem modern bir e-ticaret platformu olarak microservice mimarisi üzerine kuruludur.
 
 ## 🔥 Teknoloji Yığını
 
