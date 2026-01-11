@@ -1,0 +1,47 @@
+[
+  {
+    "Name": "MultiShop",
+    "Projects": [
+      {
+        "Path": "Services\\Catalog\\MultiShop.Catalog\\MultiShop.Catalog.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "IdentityServer\\MultiShop.IdentityServer\\MultiShop.IdentityServer.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Services\\Discount\\MultiShop.Discount\\MultiShop.Discount.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Services\\Order\\Presentation\\MultiShop.Order.WebAPI\\MultiShop.Order.WebAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Services\\Cargo\\MultiShop.Cargo.WebAPI\\MultiShop.Cargo.WebAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Basket\\MultiShop.Basket\\MultiShop.Basket.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Services\\Comment\\MultiShop.Comment\\MultiShop.Comment.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "ApiGateway\\MultiShop.OcelotGateway\\MultiShop.OcelotGateway.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Frontend\\MultiShop.WebUI\\MultiShop.WebUI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Services\\Message\\MultiShop.Message\\MultiShop.Message.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

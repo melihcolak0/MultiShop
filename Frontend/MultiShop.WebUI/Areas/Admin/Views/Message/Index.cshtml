@@ -1,0 +1,73 @@
+﻿@model List<ResultUserMessageDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary">
+            <i class="fa fa-envelope"></i> Mesajlar
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-envelope"></i> Mesajlar</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="chart-box">
+                    <h4>Mesajlar'ın Listelenmesi</h4>
+                    <p>Mesajlar ile ilgili listeleme işlemini aşağıdan gerçekleştirebilirsiniz.</p>
+                    <div class="bs-example" data-example-id="hoverable-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Gönderen</th>
+                                    <th>Alıcı</th>
+                                    <th>Konu</th>
+                                    <th>Mesaj</th>
+                                    <th>Okundu mu?</th>
+                                    <th>Gönderilme Tarihi</th>                                 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    count++;
+                                    <tr>
+                                        <th scope="row">@count</th>                                      
+                                        <td>@item.SenderName @item.SenderSurname</td>
+                                        <td>@item.ReceiverName @item.ReceiverSurname</td>
+                                        <td>@item.Subject</td>
+                                        <td>
+                                            @(string.IsNullOrEmpty(item.MessageDetail)
+                                                                                    ? ""
+                                                                                    : item.MessageDetail.Length <= 15
+                                                                                    ? item.MessageDetail
+                                                                                    : item.MessageDetail.Substring(0, 15) + "...")
+                                    </td>
+                                        @if (item.IsRead)
+                                        {
+                                            <td><span style="background:#28a745; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Okundu</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span style="background:#dc3545; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Okunmadı</span></td>
+                                        }
+                                        <td>@item.SendDate.ToString("dd MMM yyyy - HH:mm")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

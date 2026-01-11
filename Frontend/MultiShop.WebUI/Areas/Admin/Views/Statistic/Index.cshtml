@@ -1,0 +1,448 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    .stats-card {
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+    }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+    .stats-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        float: left;
+        margin-right: 15px;
+    }
+
+    .stats-info h5 {
+        font-size: 13px;
+        font-weight: 600;
+        color: #64748b;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stats-info h3 {
+        font-size: 26px;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    /* Soft Renk Paletleri */
+    .bg-purple-soft {
+        background: linear-gradient(135deg, #f3e7ff 0%, #e9d5ff 100%);
+    }
+
+    .bg-blue-soft {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    }
+
+    .bg-green-soft {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    }
+
+    .bg-orange-soft {
+        background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+    }
+
+    .bg-pink-soft {
+        background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+    }
+
+    .bg-cyan-soft {
+        background: linear-gradient(135deg, #cffafe 0%, #a5f3fc 100%);
+    }
+
+    .bg-indigo-soft {
+        background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+    }
+
+    .bg-yellow-soft {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    }
+
+    .bg-red-soft {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    }
+
+    .bg-teal-soft {
+        background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+    }
+
+    .bg-rose-soft {
+        background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+    }
+
+    .bg-emerald-soft {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    }
+
+    /* İkon Renkleri */
+    .icon-purple {
+        color: #9333ea;
+    }
+
+    .icon-blue {
+        color: #2563eb;
+    }
+
+    .icon-green {
+        color: #059669;
+    }
+
+    .icon-orange {
+        color: #ea580c;
+    }
+
+    .icon-pink {
+        color: #db2777;
+    }
+
+    .icon-cyan {
+        color: #0891b2;
+    }
+
+    .icon-indigo {
+        color: #4f46e5;
+    }
+
+    .icon-yellow {
+        color: #d97706;
+    }
+
+    .icon-red {
+        color: #dc2626;
+    }
+
+    .icon-teal {
+        color: #0d9488;
+    }
+
+    .icon-rose {
+        color: #e11d48;
+    }
+
+    .icon-emerald {
+        color: #059669;
+    }
+</style>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary">
+            <i class="fa fa-bar-chart"></i> İstatistikler
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-bar-chart"></i> İstatistikler</li>
+        </ol>
+    </section>
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <div class="stats-card bg-purple-soft">
+                    <div class="stats-icon bg-white">
+                        <i class="fa fa-th-large icon-purple"></i>
+                    </div>
+                    <div class="stats-info">
+                        <h5>KATEGORİ SAYISI</h5>
+                        <h3>@ViewBag.CategoryCount</h3>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="stats-card bg-blue-soft">
+                    <div class="stats-icon bg-white">
+                        <i class="fa fa-bookmark icon-blue"></i>
+                    </div>
+                    <div class="stats-info">
+                        <h5>MARKA SAYISI</h5>
+                        <h3>@ViewBag.BrandCount</h3>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="stats-card bg-green-soft">
+                    <div class="stats-icon bg-white">
+                        <i class="fa fa-cube icon-green"></i>
+                    </div>
+                    <div class="stats-info">
+                        <h5>ÜRÜN SAYISI</h5>
+                        <h3>@ViewBag.ProductCount</h3>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="stats-card bg-orange-soft">
+                    <div class="stats-icon bg-white">
+                        <i class="fa fa-money icon-orange"></i>
+                    </div>
+                    <div class="stats-info">
+                        <h5>ORTALAMA ÜRÜN FİYATI</h5>
+                        <h3>@ViewBag.ProductsAvgPrice ₺</h3>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <div class="stats-card bg-pink-soft">
+                    <div class="stats-icon bg-white">
+                        <i class="fa fa-arrow-up icon-pink"></i>
+                    </div>
+                    <div class="stats-info">
+                        <h5>EN YÜKSEK FİYATLI ÜRÜN</h5>
+                        <h3 style="font-size: 18px;">@ViewBag.MaxPriceProductName</h3>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="stats-card bg-cyan-soft">
+                    <div class="stats-icon bg-white">
+                        <i class="fa fa-arrow-down icon-cyan"></i>
+                    </div>
+                    <div class="stats-info">
+                        <h5>EN DÜŞÜK FİYATLI ÜRÜN</h5>
+                        <h3 style="font-size: 18px;">@ViewBag.MinPriceProductName</h3>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="stats-card bg-indigo-soft">
+                    <div class="stats-icon bg-white">
+                        <i class="fa fa-users icon-indigo"></i>
+                    </div>
+                    <div class="stats-info">
+                        <h5>KULLANICI SAYISI</h5>
+                        <h3>@ViewBag.UserCount</h3>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="stats-card bg-yellow-soft">
+                    <div class="stats-icon bg-white">
+                        <i class="fa fa-comments icon-yellow"></i>
+                    </div>
+                    <div class="stats-info">
+                        <h5>TOPLAM YORUM SAYISI</h5>
+                        <h3>@ViewBag.TotalCommentCount</h3>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <div class="stats-card bg-emerald-soft">
+                    <div class="stats-icon bg-white">
+                        <i class="fa fa-check-circle icon-emerald"></i>
+                    </div>
+                    <div class="stats-info">
+                        <h5>AKTİF YORUM SAYISI</h5>
+                        <h3>@ViewBag.ActiveCommentCount</h3>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="stats-card bg-red-soft">
+                    <div class="stats-icon bg-white">
+                        <i class="fa fa-times-circle icon-red"></i>
+                    </div>
+                    <div class="stats-info">
+                        <h5>PASİF YORUM SAYISI</h5>
+                        <h3>@ViewBag.PassiveCommentCount</h3>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="stats-card bg-teal-soft">
+                    <div class="stats-icon bg-white">
+                        <i class="fa fa-ticket icon-teal"></i>
+                    </div>
+                    <div class="stats-info">
+                        <h5>TOPLAM KUPON SAYISI</h5>
+                        <h3>@ViewBag.CouponCount</h3>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="stats-card bg-indigo-soft">
+                    <div class="stats-icon bg-white">
+                        <i class="fa fa-envelope icon-indigo"></i>
+                    </div>
+                    <div class="stats-info">
+                        <h5>TOPLAM MESAJ SAYISI</h5>
+                        <h3>@ViewBag.TotalMessageCount</h3>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>            
+        </div>
+    </section>
+</div>
+
+@* @{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary">
+            <i class="fa fa-bar-chart"></i> İstatistikler
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-bar-chart"></i> İstatistikler</li>
+        </ol>
+    </section>
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box">
+                    <div class="media-icon pull-left"><i class="icon-bargraph"></i> </div>
+                    <div class="media-info">
+                        <h5>Kategori Sayısı</h5>
+                        <h3>@ViewBag.CategoryCount</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-sea">
+                    <div class="media-icon pull-left"><i class="icon-wallet"></i> </div>
+                    <div class="media-info">
+                        <h5>Marka Sayısı</h5>
+                        <h3>@ViewBag.BrandCount</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-blue">
+                    <div class="media-icon pull-left"><i class="icon-basket"></i> </div>
+                    <div class="media-info">
+                        <h5>Ürün Sayısı</h5>
+                        <h3>@ViewBag.ProductCount</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-green">
+                    <div class="media-icon pull-left"><i class="icon-layers"></i> </div>
+                    <div class="media-info">
+                        <h5>Ortalama Ürün Fiyatı</h5>
+                        <h3>@ViewBag.ProductsAvgPrice ₺</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box">
+                    <div class="media-icon pull-left"><i class="icon-bargraph"></i> </div>
+                    <div class="media-info">
+                        <h5>En Yüksek Fiyatlı Ürün</h5>
+                        <h3>@ViewBag.MaxPriceProductName</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-sea">
+                    <div class="media-icon pull-left"><i class="icon-wallet"></i> </div>
+                    <div class="media-info">
+                        <h5>En Düşük Fiyatlı Ürün</h5>
+                        <h3>@ViewBag.MinPriceProductName</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-blue">
+                    <div class="media-icon pull-left"><i class="icon-basket"></i> </div>
+                    <div class="media-info">
+                        <h5>Kullanıcı Sayısı</h5>
+                        <h3>@ViewBag.UserCount</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-green">
+                    <div class="media-icon pull-left"><i class="icon-layers"></i> </div>
+                    <div class="media-info">
+                        <h5>Toplam Yorum Sayısı</h5>
+                        <h3>@ViewBag.TotalCommentCount</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box">
+                    <div class="media-icon pull-left"><i class="icon-bargraph"></i> </div>
+                    <div class="media-info">
+                        <h5>Aktif Yorum Sayısı</h5>
+                        <h3>@ViewBag.ActiveCommentCount</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-sea">
+                    <div class="media-icon pull-left"><i class="icon-wallet"></i> </div>
+                    <div class="media-info">
+                        <h5>Pasif Yorum Sayısı</h5>
+                        <h3>@ViewBag.PassiveCommentCount</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-blue">
+                    <div class="media-icon pull-left"><i class="icon-basket"></i> </div>
+                    <div class="media-info">
+                        <h5>Toplam Kupon Sayısı</h5>
+                        <h3>@ViewBag.CouponCount</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-green">
+                    <div class="media-icon pull-left"><i class="icon-layers"></i> </div>
+                    <div class="media-info">
+                        <h5>Aktif Kupon Sayısı</h5>
+                        <h3>@(ViewBag.CouponCount - 5)</h3>
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </section>
+</div>
+ *@

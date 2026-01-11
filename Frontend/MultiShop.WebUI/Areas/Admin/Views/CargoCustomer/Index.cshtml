@@ -1,0 +1,83 @@
+﻿@model List<ResultCargoCustomerDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary">
+            <i class="fa fa-address-book"></i> Kargo Müşterileri
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-address-book"></i> Kargo Müşterileri</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="chart-box">
+                    <h4>Kargo Müşterileri'nin Listelenmesi</h4>
+                    <p>Kargo Müşterileri ile ilgili listeleme, ekleme, silme ve güncelleme işlemlerini aşağıdan gerçekleştirebilirsiniz.</p>
+                    <div class="bs-example" data-example-id="hoverable-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Adı ve Soyadı</th>
+                                    <th>E-posta</th>
+                                    <th>Telefon Numarası</th>
+                                    <th>İl</th>
+                                    <th>İlçe</th>
+                                    <th>Adres</th>
+                                    <th>Sil</th>
+                                    <th>Güncelle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    count++;
+                                    <tr>
+                                        <th scope="row">@count</th>
+                                        <td>@item.Name @item.Surname</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.Phone</td>
+                                        <td>@item.City</td>
+                                        <td>@item.District</td>
+                                        @if (!string.IsNullOrEmpty(item.Address))
+                                        {
+                                            <td>
+                                                @(item.Address.Length <= 10 ? item.Address : item.Address.Substring(0, 10) + "...")
+                                            </td>
+                                        }
+                                        <td>
+                                            <a href="/Admin/CargoCustomer/DeleteCargoCustomer/@item.CargoCustomerId"
+                                               class="btn btn-danger btn-rounded btn-sm">
+                                                <i class="bi bi-trash"></i> Sil
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/CargoCustomer/UpdateCargoCustomer/@item.CargoCustomerId"
+                                               class="btn btn-warning btn-rounded btn-sm">
+                                                <i class="bi bi-pencil-square"></i> Güncelle
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+                        <a href="/Admin/CargoCustomer/CreateCargoCustomer" class="btn btn-primary btn-rounded btn-sm">
+                            <i class="bi bi-plus-circle"></i> Yeni Kargo Müşterisi Ekle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

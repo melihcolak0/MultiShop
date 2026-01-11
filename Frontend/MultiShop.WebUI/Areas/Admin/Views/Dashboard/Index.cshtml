@@ -1,0 +1,473 @@
+﻿@model DashboardViewModel
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+<style>
+    .progress-container {
+        width: 100%;
+        height: 25px;
+        background: #f0f0f0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: width 0.3s ease;
+    }
+
+    .progress-text {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 13px;
+        color: #333;
+        z-index: 2;
+    }
+
+    .progress-total {
+        width: 100%;
+        height: 25px;
+        background-color: #428bca;
+        border: 1px solid #357ebd;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: bold;
+        font-size: 13px;
+    }
+</style>
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary">
+            <i class="fa fa-home"></i> Dashboard
+        </h3>      
+    </section>
+
+    <section class="content">
+        <!-- Özet Kartlar -->
+        <div class="row">
+            @{
+                var totalProducts = Model.CategoryProducts.Sum(x => x.ProductCount);
+                var totalCategories = Model.CategoryProducts.Count();
+                var maxCategory = Model.CategoryProducts.OrderByDescending(x => x.ProductCount).FirstOrDefault();
+                var avgProducts = totalCategories > 0 ? (totalProducts / (double)totalCategories) : 0;
+            }
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box">
+                    <div class="media-icon pull-left"><i class="fa fa-cubes"></i></div>
+                    <div class="media-info">
+                        <h5>Toplam Ürün</h5>
+                        <h3>@totalProducts</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-sea">
+                    <div class="media-icon pull-left"><i class="fa fa-list"></i></div>
+                    <div class="media-info">
+                        <h5>Kategori Sayısı</h5>
+                        <h3>@totalCategories</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-blue">
+                    <div class="media-icon pull-left"><i class="fa fa-star"></i></div>
+                    <div class="media-info">
+                        <h5>En Çok Ürün</h5>
+                        <h3>@(maxCategory?.ProductCount ?? 0) <small class="pull-right" style="font-size: 12px; margin-top: 8px; color:#fff;">@(maxCategory?.CategoryName ?? "-")</small></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-green">
+                    <div class="media-icon pull-left"><i class="fa fa-calculator"></i></div>
+                    <div class="media-info">
+                        <h5>Ortalama Ürün</h5>
+                        <h3>@avgProducts.ToString("F1") <small class="pull-right" style="font-size: 12px; margin-top: 8px; color:#fff;">Kategori başına</small></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grafik Bölümü -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="chart-box">
+                    <h4><i class="fa fa-bar-chart"></i> Kategorilere Göre Ürün Dağılımı</h4>
+                    <div class="chart">
+                        <div style="position: relative; height: 350px;">
+                            <canvas id="categoryBarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="chart-box">
+                    <h4><i class="fa fa-pie-chart"></i> Dağılım Oranı</h4>
+                    <div class="chart">
+                        <div style="position: relative; height: 350px;">
+                            <canvas id="categoryPieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detaylı Tablo -->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="chart-box">
+                    <h4><i class="fa fa-table"></i> Detaylı Kategori Listesi</h4>
+                    <div class="chart">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <th style="width:50px;">#</th>
+                                        <th>Kategori Adı</th>
+                                        <th style="width:150px;" class="text-center">Ürün Sayısı</th>
+                                        <th style="width:300px;">Yüzde Dağılım</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        var rowIndex = 1;
+                                    }
+
+                                    @foreach (var item in Model.CategoryProducts.OrderByDescending(x => x.ProductCount))
+                                    {
+                                        var percentage = totalProducts > 0
+                                        ? (item.ProductCount * 100.0 / totalProducts)
+                                        : 0;
+
+                                        string barColor =
+                                        percentage > 20 ? "#5cb85c" :
+                                        percentage > 10 ? "#5bc0de" :
+                                        "#f0ad4e";
+
+                                        <tr>
+                                            <td class="text-center"><strong>@rowIndex</strong></td>
+
+                                            <td>
+                                                <i class="fa fa-folder-o text-primary"></i>
+                                                <strong>@item.CategoryName</strong>
+                                            </td>
+
+                                            <td class="text-center">
+                                                <span class="label label-info" style="font-size:12px;">
+                                                    @item.ProductCount ürün
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <div class="progress-container">
+                                                    <div class="progress-bar"
+                                                         style="width:@percentage.ToString("F2", CultureInfo.InvariantCulture)%; background-color:@barColor;">
+                                                    </div>
+
+
+                                                    <div class="progress-text">
+                                                        @percentage.ToString("F1")%
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        rowIndex++;
+                                    }
+                                </tbody>
+
+                                <tfoot>
+                                    <tr class="bg-light-gray">
+                                        <th colspan="2" class="text-right">TOPLAM:</th>
+                                        <th class="text-center">
+                                            <span class="label label-primary" style="font-size:12px;">
+                                                @totalProducts ürün
+                                            </span>
+                                        </th>
+                                        <th>
+                                            <div class="progress-total">100%</div>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@* <div class="content-wrapper">
+    <section class="content-header">
+        <h1>Dashboard</h1>
+        <ol class="breadcrumb">
+            <li><a href="/Default/Index"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+            <li class="active"><i class="fa fa-dashboard"></i> Dashboard</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box">
+                    <div class="media-icon pull-left"><i class="icon-bargraph"></i> </div>
+                    <div class="media-info">
+                        <h5>Total Leads</h5>
+                        <h3>1530</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-sea">
+                    <div class="media-icon pull-left"><i class="icon-wallet"></i> </div>
+                    <div class="media-info">
+                        <h5>Total Payment</h5>
+                        <h3>$8,530</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-blue">
+                    <div class="media-icon pull-left"><i class="icon-basket"></i> </div>
+                    <div class="media-info">
+                        <h5>Total Sales</h5>
+                        <h3>935</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+                <div class="media-box bg-green">
+                    <div class="media-icon pull-left"><i class="icon-layers"></i> </div>
+                    <div class="media-info">
+                        <h5>New Orders</h5>
+                        <h3>5324</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-chart-bar me-2"></i>Kategori Ürün İstatistikleri
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Bar Chart -->
+                            <div class="col-lg-8 mb-4">
+                                <canvas id="categoryBarChart" style="max-height: 400px;"></canvas>
+                            </div>
+
+                            <!-- Pie Chart -->
+                            <div class="col-lg-4 mb-4">
+                                <canvas id="categoryPieChart" style="max-height: 400px;"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Data Table -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h5 class="mb-3">Detaylı Liste</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Kategori Adı</th>
+                                                <th>Ürün Sayısı</th>
+                                                <th>Yüzde</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                var totalProducts = Model.Sum(x => x.ProductCount);
+                                                var index = 1;
+                                            }
+                                            @foreach (var item in Model.OrderByDescending(x => x.ProductCount))
+                                            {
+                                                var percentage = totalProducts > 0 ? (item.ProductCount * 100.0 / totalProducts) : 0;
+                                                <tr>
+                                                    <td>@index</td>
+                                                    <td><strong>@item.CategoryName</strong></td>
+                                                    <td>
+                                                        <span class="badge bg-info">@item.ProductCount ürün</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="progress" style="height: 25px;">
+                                                            <div class="progress-bar bg-success" role="progressbar"
+                                                                 style="width: @percentage%"
+                                                                 aria-valuenow="@percentage"
+                                                                 aria-valuemin="0"
+                                                                 aria-valuemax="100">
+                                                                @percentage.ToString("F1")%
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                index++;
+                                            }
+                                        </tbody>
+                                        <tfoot class="table-secondary">
+                                            <tr>
+                                                <th colspan="2">TOPLAM</th>
+                                                <th><span class="badge bg-primary">@totalProducts ürün</span></th>
+                                                <th>100%</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>  
+</div> *@
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Veriyi hazırla
+        const categories = @Html.Raw(Json.Serialize(Model.CategoryProducts.Select(x => x.CategoryName)));
+        const productCounts = @Html.Raw(Json.Serialize(Model.CategoryProducts.Select(x => x.ProductCount)));
+
+        // Renkler
+        const colors = [
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(255, 206, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+            'rgba(255, 159, 64, 0.8)',
+            'rgba(46, 204, 113, 0.8)',
+            'rgba(52, 152, 219, 0.8)',
+            'rgba(155, 89, 182, 0.8)',
+            'rgba(241, 196, 15, 0.8)'
+        ];
+
+        const borderColors = colors.map(color => color.replace('0.8', '1'));
+
+        // Bar Chart
+        const barCtx = document.getElementById('categoryBarChart').getContext('2d');
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: categories,
+                datasets: [{
+                    label: 'Ürün Sayısı',
+                    data: productCounts,
+                    backgroundColor: colors,
+                    borderColor: borderColors,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        padding: 12,
+                        titleFont: {
+                            size: 14
+                        },
+                        bodyFont: {
+                            size: 13
+                        },
+                        callbacks: {
+                            label: function(context) {
+                                return ' ' + context.parsed.y + ' ürün';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Pie Chart
+        const pieCtx = document.getElementById('categoryPieChart').getContext('2d');
+        new Chart(pieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: categories,
+                datasets: [{
+                    data: productCounts,
+                    backgroundColor: colors,
+                    borderColor: '#fff',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: {
+                                size: 11
+                            },
+                            boxWidth: 12
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return ' ' + context.label + ': ' + context.parsed + ' ürün (' + percentage + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}

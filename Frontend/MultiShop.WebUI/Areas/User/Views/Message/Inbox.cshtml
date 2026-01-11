@@ -1,0 +1,438 @@
+﻿@model List<ResultInboxDTO>
+
+@{
+    ViewData["Title"] = "Inbox";
+    Layout = "~/Areas/User/Views/UserLayout/Index.cshtml";
+
+    int count = 0;
+    var unreadMessages = Model.Count(x => !x.IsRead);
+    var todayMessages = Model.Where(x => x.SendDate.Date == DateTime.Now.Date).Count();
+    var thisWeekMessages = Model.Where(x => x.SendDate >= DateTime.Now.AddDays(-7)).Count();
+}
+
+<style>
+    .badge {
+        border-radius: 20px;
+        padding: 6px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+    }
+
+    .badge-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .badge-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .badge-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+    }
+
+    .badge-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+    }
+
+    .badge-primary {
+        background-color: #cfe2ff;
+        color: #084298;
+        border: 1px solid #b6d4fe;
+    }
+
+    /* YAZI BOYUTLARINI BÜYÜTME */
+    .card-title {
+        font-size: 22px !important;
+        font-weight: 600;
+    }
+
+    .message-count-badge {
+        background-color: #e3f2fd;
+        color: #1976d2;
+        padding: 5px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-left: 10px;
+    }
+
+    .table thead th {
+        font-size: 15px;
+        font-weight: 600;
+        padding: 14px;
+    }
+
+    .table tbody td {
+        font-size: 15px;
+        padding: 14px;
+        vertical-align: middle;
+    }
+
+    /* İstatistik Kartları */
+    .card-body p {
+        font-size: 14px;
+    }
+
+    .card-body h3 {
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    /* Boş Durum */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #6c757d;
+    }
+
+        .empty-state i {
+            font-size: 80px;
+            color: #dee2e6;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h5 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+        }
+
+    /* Butonlar */
+    .btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .btn-sm {
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+
+    /* Arama Kutusu */
+    .search-box input {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .filter-buttons .btn {
+        margin-right: 5px;
+        border-radius: 20px;
+        padding: 6px 16px;
+        font-size: 13px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+        cursor: pointer;
+    }
+
+    .card-header-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .search-box {
+        max-width: 300px;
+    }
+
+    /* Okunmamış mesaj vurgusu */
+    .unread-row {
+        background-color: #f0f8ff;
+        font-weight: 600;
+    }
+
+    .message-subject {
+        font-weight: 600;
+        color: #495057;
+        cursor: pointer;
+    }
+
+        .message-subject:hover {
+            color: #007bff;
+            text-decoration: underline;
+        }
+
+    .message-preview {
+        color: #6c757d;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 300px;
+    }
+
+    .sender-name {
+        font-weight: 500;
+        color: #495057;
+    }
+</style>
+
+<div class="content-wrapper">
+
+    <!-- Özet İstatistikler -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <div class="card" style="border-radius: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1" style="font-size: 18px; opacity: 0.9;">Toplam Mesaj</p>
+                            <h3 class="mb-0">@Model.Count</h3>
+                        </div>
+                        <i class="mdi mdi-email" style="font-size: 48px; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card" style="border-radius: 16px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none;">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1" style="font-size: 18px; opacity: 0.9;">Okunmamış</p>
+                            <h3 class="mb-0">@unreadMessages</h3>
+                        </div>
+                        <i class="mdi mdi-email-alert" style="font-size: 48px; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>       
+        <div class="col-md-3">
+            <div class="card" style="border-radius: 16px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; border: none;">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1" style="font-size: 18px; opacity: 0.9;">Bugün Gelen</p>
+                            <h3 class="mb-0">@todayMessages</h3>
+                        </div>
+                        <i class="mdi mdi-email-check" style="font-size: 48px; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card" style="border-radius: 16px; background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); color: white; border: none;">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1" style="font-size: 18px; opacity: 0.9;">Son 7 Gün</p>
+                            <h3 class="mb-0">@thisWeekMessages</h3>
+                        </div>
+                        <i class="mdi mdi-calendar-clock" style="font-size: 48px; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    
+                    <!-- Başlık ve Filtre Alanı -->
+                    <div class="card-header-actions">
+                        <div>
+                            <h4 class="card-title d-inline-block mb-0">
+                                Gelen Kutusu
+                                <span class="message-count-badge">@Model.Count Mesaj</span>
+                            </h4>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <!-- Arama Kutusu -->
+                            <div class="search-box mr-3">
+                                <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Mesaj ara...">
+                            </div>
+                            <!-- Filtre Butonları -->
+                            <div class="filter-buttons">
+                                <button class="btn btn-sm btn-outline-primary active" onclick="filterMessages('all')">
+                                    <i class="mdi mdi-format-list-bulleted"></i> Tümü
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="filterMessages('unread')">
+                                    <i class="mdi mdi-email-alert"></i> Okunmamış
+                                </button>
+                                <button class="btn btn-sm btn-outline-success" onclick="filterMessages('read')">
+                                    <i class="mdi mdi-email-check"></i> Okunmuş
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        <!-- Tablo -->
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="messagesTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>
+                                            <i class="mdi mdi-account"></i> Gönderen
+                                        </th>
+                                        <th>
+                                            <i class="mdi mdi-email-outline"></i> Konu ve Önizleme
+                                        </th>
+                                        <th>
+                                            <i class="mdi mdi-calendar"></i> Tarih
+                                        </th>
+                                        <th>
+                                            <i class="mdi mdi-check-circle"></i> Durum
+                                        </th>
+                                        <th class="text-center">
+                                            <i class="mdi mdi-cog"></i> İşlemler
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderByDescending(x => x.SendDate))
+                                    {
+                                        count++;
+                                        <tr class="@(item.IsRead ? "" : "unread-row")" data-read="@item.IsRead.ToString().ToLower()">
+                                            <td>
+                                                <strong>@count</strong>
+                                            </td>
+                                            <td>
+                                                <span class="sender-name">
+                                                    <i class="mdi mdi-account-circle text-muted"></i>
+                                                    @item.SenderName @item.SenderSurname (@item.SenderEmail)
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="message-subject" onclick="viewMessageDetails(@item.UserMessageId)">
+                                                    @if (!item.IsRead)
+                                                    {
+                                                        <i class="mdi mdi-email-alert text-danger"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="mdi mdi-email-open text-success"></i>
+                                                    }
+                                                    @item.Subject
+                                                </div>
+                                                <div class="message-preview">@item.MessageDetail</div>
+                                            </td>
+                                            <td>
+                                                <i class="mdi mdi-clock-outline text-muted"></i>
+                                                @item.SendDate.ToLocalTime().ToString("dd MMMM yyyy - HH:mm")
+                                            </td>
+                                            @if (item.IsRead)
+                                            {
+                                                <td><label class="badge badge-success"><i class="mdi mdi-check"></i> Okundu</label></td>
+                                            }
+                                            else
+                                            {
+                                                <td><label class="badge badge-danger"><i class="mdi mdi-email-alert"></i> Okunmadı</label></td>
+                                            }
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary" onclick="viewMessageDetails(@item.UserMessageId)" title="Mesajı Aç">
+                                                    <i class="mdi mdi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success" onclick="replyMessage(@item.UserMessageId)" title="Yanıtla">
+                                                    <i class="mdi mdi-reply"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="deleteMessage(@item.UserMessageId)" title="Sil">
+                                                    <i class="mdi mdi-delete"></i>
+                                                </button>
+                                                @if(item.IsRead)
+                                                {
+                                                    <button class="btn btn-sm btn-outline-warning" onclick="changeMessageReading(@item.UserMessageId)" title="Okunmadı Yap">
+                                                        <i class="mdi mdi-close"></i>
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn btn-sm btn-outline-secondary" onclick="changeMessageReading(@item.UserMessageId)" title="Okundu Yap">
+                                                        <i class="mdi mdi-check"></i>
+                                                    </button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Boş Durum -->
+                        <div class="empty-state">
+                            <i class="mdi mdi-email-off"></i>
+                            <h5>Gelen kutunuz boş</h5>
+                            <p class="text-muted">Henüz hiç mesaj almadınız.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Arama Fonksiyonu
+    document.getElementById('searchInput')?.addEventListener('keyup', function() {
+        const searchValue = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#messagesTable tbody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchValue) ? '' : 'none';
+        });
+    });
+
+    // Filtreleme Fonksiyonu
+    function filterMessages(filter) {
+        const rows = document.querySelectorAll('#messagesTable tbody tr');
+        const buttons = document.querySelectorAll('.filter-buttons .btn');
+
+        // Buton active durumunu güncelle
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        rows.forEach(row => {
+            const isRead = row.getAttribute('data-read');
+            if (filter === 'all') {
+                row.style.display = '';
+            } else if (filter === 'read') {
+                row.style.display = isRead === 'true' ? '' : 'none';
+            } else if (filter === 'unread') {
+                row.style.display = isRead === 'false' ? '' : 'none';
+            }
+        });
+    }
+
+    // Mesaj Detayları
+    function viewMessageDetails(messageId) {
+        window.location.href = `/User/Message/Details/${messageId}`;
+    }   
+
+    // Mesajı Yanıtla
+    function replyMessage(messageId) {
+        window.location.href = `/User/Message/Reply/${messageId}`;
+    }
+
+    // Mesajı Sil
+    function deleteMessage(messageId) {
+        if (confirm('Bu mesajı silmek istediğinizden emin misiniz?')) {
+            window.location.href = `/User/Message/Delete/${messageId}`;
+        }
+    }
+
+    // Mesaj Durumu
+    function changeMessageReading(messageId) {
+        window.location.href = `/User/Message/ChangeUserMessageReading/${messageId}`;
+    }
+</script>

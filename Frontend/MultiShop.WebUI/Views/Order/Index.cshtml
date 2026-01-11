@@ -1,0 +1,101 @@
+﻿@model CreateAddressDTO
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30" style="border-radius: 16px;">
+                <a class="breadcrumb-item text-dark" href="/Default/Index">Ana Sayfa</a>
+                <span class="breadcrumb-item active">Sipariş Detayları</span>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<form method="post">
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-lg-8">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">FATURA VE TESLİMAT ADRESİ</span></h5>
+                <div class="bg-light p-30 mb-5" style="border-radius: 16px;">
+                    <div class="row">
+                        <input type="hidden" asp-for="UserId" value="@ViewBag.userId"/>
+                        <div class="col-md-6 form-group">
+                            <label>Adı</label>
+                            <input class="form-control" type="text" style="border-radius: 10px;" value="@ViewBag.name">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Soyadı</label>
+                            <input class="form-control" type="text" style="border-radius: 10px;" value="@ViewBag.surname">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>E-Posta Adresi</label>
+                            <input class="form-control" type="text" style="border-radius: 10px;" value="@ViewBag.email">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Telefon Numarası No</label>
+                            <input class="form-control" type="text" style="border-radius: 10px;" value="@ViewBag.phone">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Adres Detayı</label>
+                            <input class="form-control" type="text" style="border-radius: 10px;" asp-for="Detail1">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Adres Detayı 2</label>
+                            <input class="form-control" type="text" style="border-radius: 10px;" asp-for="Detail2">
+                        </div>                                           
+                        <div class="col-md-6 form-group">
+                            <label>Ülke</label>
+                            <input class="form-control" type="text" style="border-radius: 10px;" asp-for="Country">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>İl</label>
+                            <input class="form-control" type="text" style="border-radius: 10px;" asp-for="City">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>İlçe</label>
+                            <input class="form-control" type="text" style="border-radius: 10px;" asp-for="District">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Posta Kodu</label>
+                            <input class="form-control" type="text" style="border-radius: 10px;" asp-for="ZipCode">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                
+                @await Component.InvokeAsync("_BasketDetailOrderComponent")
+
+                <div class="mb-5">
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">ÖDEME TÜRÜ</span></h5>
+                    <div class="bg-light p-30" style="border-radius: 16px;">
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="payment" id="paypal">
+                                <label class="custom-control-label" for="paypal">Paypal</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="payment" id="directcheck">
+                                <label class="custom-control-label" for="directcheck">Kredi/Banka Kartı</label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
+                                <label class="custom-control-label" for="banktransfer">Havale/EFT</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-block btn-primary font-weight-bold py-3">Siparişi Onayla</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

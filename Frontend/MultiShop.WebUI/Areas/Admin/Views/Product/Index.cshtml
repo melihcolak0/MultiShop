@@ -1,0 +1,91 @@
+﻿@model List<ResultProductWithCategoryDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary">
+            <i class="fa fa-tags"></i> Ürünler
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-tags"></i> Ürünler</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="chart-box">
+                    <h4>Ürünler'in Listelenmesi</h4>
+                    <p>Ürünler ile ilgili listeleme, ekleme, silme ve güncelleme işlemlerini aşağıdan gerçekleştirebilirsiniz.</p>
+                    <div class="bs-example" data-example-id="hoverable-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Resim</th>
+                                    <th>Ürün Adı</th>
+                                    <th>Fiyat</th>
+                                    <th>Kategori</th>
+                                    <th>Sil</th>
+                                    <th>Güncelle</th>
+                                    <th>Resimler</th>
+                                    <th>Detaylar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    count++;
+                                    <tr>
+                                        <th scope="row">@count</th>                                       
+                                        <td>
+                                            <img src="@item.ProductImageUrl"
+                                                 style="width: 90px; height: 50px; border-radius: 12px; box-shadow: 0 0 6px rgba(0,0,0,0.2); object-fit: cover;" />
+                                        </td>
+                                        <td>@item.ProductName</td>
+                                        <td>@item.ProductPrice.ToString("N2") ₺</td>
+                                        <td>@item.CategoryName</td>
+                                        <td>
+                                            <a href="/Admin/Product/DeleteProduct/@item.ProductId"
+                                               class="btn btn-danger btn-rounded btn-sm">
+                                                <i class="bi bi-trash"></i> Sil
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/Product/UpdateProduct/@item.ProductId"
+                                               class="btn btn-warning btn-rounded btn-sm">
+                                                <i class="bi bi-pencil-square"></i> Güncelle
+                                            </a>
+                                        </td>
+                                         <td>
+                                            <a href="/Admin/ProductImage/UpdateProductImageByProductId/@item.ProductId"
+                                               class="btn btn-success btn-rounded btn-sm">
+                                                <i class="bi bi-image"></i> Resimler
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/ProductDetail/UpdateProductDetailByProductId/@item.ProductId"
+                                               class="btn btn-default btn-rounded btn-sm">
+                                                <i class="bi bi-file-earmark-text"></i> Detaylar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+                        <a href="/Admin/Product/CreateProduct" class="btn btn-primary btn-rounded btn-sm">
+                            <i class="bi bi-plus-circle"></i> Yeni Ürün Ekle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

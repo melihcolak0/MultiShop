@@ -1,0 +1,61 @@
+﻿@model GetProductDetailDTO
+
+@{
+    ViewData["Title"] = "UpdateProductDetailByProductId";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    .center-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .fixed-dropdown {
+        min-height: 35px !important;
+        height: auto !important;
+    }
+</style>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary text-center">
+            <i class="fa fa-file-alt"></i> Ürün Detayları
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-file-alt"></i> Ürün Detayları</li>
+            <li class="active"><i class="bi bi-pencil-square"></i> Ürün Detayı Güncelleme</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="center-container">
+            <div class="col-md-6">
+                <div class="chart-box">
+                    <h4>Ürün Detayı Güncelleme</h4>
+                    <br />
+                    <form method="post">
+                        <input type="hidden" asp-for="ProductDetailId" />                        
+                        <input type="hidden" asp-for="ProductId" />                        
+                        <div class="form-group">
+                            <label>Ürün Bilgileri</label>
+                            <textarea class="form-control" asp-for="ProductInfo" rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Ürün Açıklaması</label>
+                            <textarea class="form-control" asp-for="ProductDescription" rows="5"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-rounded btn-sm">
+                            <i class="bi bi-pencil-square"></i> Güncelle
+                        </button>
+                        <a href="/Admin/Product/Index" class="btn btn-default btn-rounded btn-sm ">
+                            <i class="fa fa-arrow-left"></i> Geri
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,75 @@
+﻿@model CreateUserCommentDTO
+
+@{
+    ViewData["Title"] = "CreateUserComment";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    .center-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .fixed-dropdown {
+        min-height: 35px !important;
+        height: auto !important;
+    }
+</style>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary text-center">
+            <i class="fa fa-comment"></i> Yorumlar
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-comment"></i> Yorumlar</li>
+            <li class="active"><i class="bi bi-plus-circle"></i> Yeni Yorum Ekleme</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="center-container">
+            <div class="col-md-6">
+                <div class="chart-box">
+                    <h4>Yeni Yorum Ekleme</h4>
+                    <br />
+                    <form method="post">
+                        <div class="form-group">
+                            <label>Kullanıcı Adı ve Soyadı</label>
+                            <input class="form-control" type="text" asp-for="NameSurname">
+                        </div>
+                        <div class="form-group">
+                            <label>Kullanıcı Resim Url</label>
+                            <input class="form-control" type="text" asp-for="ImageUrl">
+                        </div>
+                        <div class="form-group">
+                            <label>Kullanıcı E-Mail Adresi</label>
+                            <input class="form-control" type="text" asp-for="Email">
+                        </div>
+                        <div class="form-group">
+                            <label>Puan</label>
+                            <input class="form-control" type="number" asp-for="Rating" max="5">
+                        </div>                    
+                        <div class="form-group">
+                            <label>Ürün</label>
+                            @Html.DropDownListFor(x => x.ProductId, (List<SelectListItem>)ViewBag.Products, new { @class = "form-control fixed-dropdown" })
+                        </div>
+                        <div class="form-group">
+                            <label>Yorum Detayı</label>
+                            <textarea class="form-control" rows="5" asp-for="CommentDetail"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-rounded btn-sm">
+                            <i class="bi bi-plus-circle"></i> Ekle
+                        </button>
+                        <a href="/Admin/UserComment/Index" class="btn btn-default btn-rounded btn-sm">
+                            <i class="fa fa-arrow-left"></i> Geri
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

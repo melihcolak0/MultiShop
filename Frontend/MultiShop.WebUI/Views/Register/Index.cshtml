@@ -1,0 +1,377 @@
+﻿@model RegisterDTO
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol - MULTI SHOP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3d4f5f 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .register-container {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            height: 90vh;
+            max-height: 700px;
+        }
+
+        .register-left {
+            background: linear-gradient(135deg, #FFD333 0%, #FFB800 100%);
+            padding: 40px 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #2c3e50;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .register-left::before {
+                content: '';
+                position: absolute;
+                width: 200%;
+                height: 200%;
+                background: repeating-linear-gradient( 45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.05) 10px, rgba(255, 255, 255, 0.05) 20px );
+                animation: slide 20s linear infinite;
+            }
+
+        @@keyframes slide {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .logo {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 30px;
+        }
+
+            .logo h1 {
+                font-size: 48px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .logo span {
+                background: #2c3e50;
+                color: #FFD333;
+                padding: 5px 15px;
+                border-radius: 5px;
+                margin-right: 5px;
+            }
+
+        .welcome-text {
+            position: relative;
+            z-index: 1;
+        }
+
+            .welcome-text h2 {
+                font-size: 32px;
+                margin-bottom: 15px;
+                font-weight: 600;
+            }
+
+            .welcome-text p {
+                font-size: 16px;
+                line-height: 1.6;
+                opacity: 0.9;
+            }
+
+        .register-right {
+            padding: 40px 50px;
+            flex: 1;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .register-header {
+            margin-bottom: 20px;
+        }
+
+            .register-header h2 {
+                font-size: 28px;
+                color: #2c3e50;
+                margin-bottom: 8px;
+                font-weight: 600;
+            }
+
+            .register-header p {
+                color: #7f8c8d;
+                font-size: 14px;
+            }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 6px;
+                color: #2c3e50;
+                font-weight: 500;
+                font-size: 14px;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 10px 16px;
+                border: 2px solid #e0e0e0;
+                border-radius: 10px;
+                font-size: 14px;
+                transition: all 0.3s ease;
+                font-family: 'Poppins', sans-serif;
+            }
+
+                .form-group input:focus {
+                    outline: none;
+                    border-color: #FFD333;
+                    box-shadow: 0 0 0 3px rgba(255, 211, 51, 0.1);
+                }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+            .form-row .form-group {
+                flex: 1;
+            }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+            .checkbox-group input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                margin-right: 10px;
+                cursor: pointer;
+                accent-color: #FFD333;
+            }
+
+            .checkbox-group label {
+                font-size: 13px;
+                color: #7f8c8d;
+                margin: 0;
+                cursor: pointer;
+            }
+
+                .checkbox-group label a {
+                    color: #FFD333;
+                    text-decoration: none;
+                    font-weight: 500;
+                }
+
+                    .checkbox-group label a:hover {
+                        text-decoration: underline;
+                    }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #FFD333 0%, #FFB800 100%);
+            color: #2c3e50;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 211, 51, 0.3);
+        }
+
+            .submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(255, 211, 51, 0.4);
+            }
+
+            .submit-btn:active {
+                transform: translateY(0);
+            }
+
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+            .login-link a {
+                color: #FFD333;
+                text-decoration: none;
+                font-weight: 600;
+                margin-left: 5px;
+            }
+
+                .login-link a:hover {
+                    text-decoration: underline;
+                }
+
+        @@media (max-width: 768px) {
+            .register-container {
+                flex-direction: column;
+            }
+
+            .register-left {
+                padding: 40px 30px;
+            }
+
+            .register-right {
+                padding: 40px 30px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .logo h1 {
+                font-size: 36px;
+            }
+
+            .welcome-text h2 {
+                font-size: 24px;
+            }
+
+            .register-header h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-left">
+            <div class="logo">
+                <h1><span>MULTI</span>SHOP</h1>
+            </div>
+            <div class="welcome-text">
+                <h2>Hoş Geldiniz!</h2>
+                <p>Trend koleksiyonlarımızı keşfedin. Zarif, rahat ve modern tasarımlarla tarzınızı yansıtın.</p>
+            </div>
+        </div>
+
+        <div class="register-right">
+            <div class="register-header">
+                <h2>Kayıt Ol</h2>
+                <p>Hesap oluşturarak özel fırsatlardan yararlanın</p>
+            </div>
+
+            <form id="registerForm" method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Adı</label>
+                        <input type="text" id="name" placeholder="Adınızı girin" required asp-for="Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="surname">Soyadı</label>
+                        <input type="text" id="surname" placeholder="Soyadınızı girin" required asp-for="Surname">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Kullanıcı Adı</label>
+                    <input type="text" id="username" placeholder="Kullanıcı adınızı girin" required asp-for="Username">
+                </div>
+                <div class="form-group">
+                    <label for="email">E-posta</label>
+                    <input type="email" id="email" placeholder="ornek@email.com" required asp-for="Email">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Şifre</label>
+                        <input type="password" id="password" placeholder="En az 8 karakter" required asp-for="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Şifre Tekrar</label>
+                        <input type="password" id="confirmPassword" placeholder="Şifrenizi tekrar girin" required asp-for="ConfirmPassword">
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">
+                        <a href="#">Kullanım Koşulları</a>'nı ve <a href="#">Gizlilik Politikası</a>'nı okudum ve kabul ediyorum
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn">Kayıt Ol</button>
+
+                <div class="login-link">
+                    Zaten hesabınız var mı?<a href="/LogIn/Index">Giriş Yapın</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @* <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                alert('Şifreler eşleşmiyor!');
+                return;
+            }
+
+            if (password.length < 8) {
+                alert('Şifre en az 8 karakter olmalıdır!');
+                return;
+            }
+
+            // Form verilerini işle
+            const formData = new FormData(this);
+            console.log('Form gönderildi:', Object.fromEntries(formData));
+
+            // Başarılı kayıt mesajı
+            // alert('Kayıt başarılı! Hoş geldiniz.');
+
+            // Formu temizle veya yönlendir
+            // window.location.href = 'giris.html';
+        });
+    </script> *@
+</body>
+</html>

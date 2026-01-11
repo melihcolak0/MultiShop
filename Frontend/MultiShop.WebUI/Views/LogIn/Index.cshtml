@@ -1,0 +1,442 @@
+﻿@model LogInDTO
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap - MULTI SHOP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3d4f5f 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            height: 90vh;
+            max-height: 600px;
+        }
+
+        .login-left {
+            background: linear-gradient(135deg, #FFD333 0%, #FFB800 100%);
+            padding: 40px 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #2c3e50;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .login-left::before {
+                content: '';
+                position: absolute;
+                width: 200%;
+                height: 200%;
+                background: repeating-linear-gradient( 45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.05) 10px, rgba(255, 255, 255, 0.05) 20px );
+                animation: slide 20s linear infinite;
+            }
+
+        @@keyframes slide {
+            0%
+
+        {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        100% {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+
+        }
+
+        .logo {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 30px;
+        }
+
+            .logo h1 {
+                font-size: 48px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .logo span {
+                background: #2c3e50;
+                color: #FFD333;
+                padding: 5px 15px;
+                border-radius: 5px;
+                margin-right: 5px;
+            }
+
+        .welcome-text {
+            position: relative;
+            z-index: 1;
+        }
+
+            .welcome-text h2 {
+                font-size: 32px;
+                margin-bottom: 15px;
+                font-weight: 600;
+            }
+
+            .welcome-text p {
+                font-size: 16px;
+                line-height: 1.6;
+                opacity: 0.9;
+                margin-bottom: 30px;
+            }
+
+        .register-prompt {
+            position: relative;
+            z-index: 1;
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(44, 62, 80, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+            .register-prompt p {
+                font-size: 14px;
+                margin-bottom: 15px;
+                opacity: 0.9;
+            }
+
+        .register-btn-outline {
+            display: inline-block;
+            padding: 12px 30px;
+            border: 2px solid #2c3e50;
+            border-radius: 10px;
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+            .register-btn-outline:hover {
+                background: #2c3e50;
+                color: #FFD333;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
+            }
+
+        .login-right {
+            padding: 40px 50px;
+            flex: 1;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+            .login-header h2 {
+                font-size: 32px;
+                color: #2c3e50;
+                margin-bottom: 10px;
+                font-weight: 600;
+            }
+
+            .login-header p {
+                color: #7f8c8d;
+                font-size: 14px;
+            }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #2c3e50;
+                font-weight: 500;
+                font-size: 14px;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 14px 20px;
+                border: 2px solid #e0e0e0;
+                border-radius: 10px;
+                font-size: 14px;
+                transition: all 0.3s ease;
+                font-family: 'Poppins', sans-serif;
+            }
+
+                .form-group input:focus {
+                    outline: none;
+                    border-color: #FFD333;
+                    box-shadow: 0 0 0 3px rgba(255, 211, 51, 0.1);
+                }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+            .remember-me input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                margin-right: 8px;
+                cursor: pointer;
+                accent-color: #FFD333;
+            }
+
+            .remember-me label {
+                font-size: 14px;
+                color: #7f8c8d;
+                cursor: pointer;
+                margin: 0;
+            }
+
+        .forgot-password {
+            font-size: 14px;
+            color: #FFD333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+            .forgot-password:hover {
+                text-decoration: underline;
+                color: #FFB800;
+            }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #FFD333 0%, #FFB800 100%);
+            color: #2c3e50;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 211, 51, 0.3);
+        }
+
+            .submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(255, 211, 51, 0.4);
+            }
+
+            .submit-btn:active {
+                transform: translateY(0);
+            }
+
+        .register-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+            .register-link a {
+                color: #FFD333;
+                text-decoration: none;
+                font-weight: 600;
+                margin-left: 5px;
+            }
+
+                .register-link a:hover {
+                    text-decoration: underline;
+                }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+        }
+
+            .divider::before,
+            .divider::after {
+                content: '';
+                flex: 1;
+                height: 1px;
+                background: #e0e0e0;
+            }
+
+            .divider span {
+                padding: 0 15px;
+                color: #7f8c8d;
+                font-size: 13px;
+            }
+
+        .quick-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .quick-link {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            color: #2c3e50;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+            .quick-link:hover {
+                border-color: #FFD333;
+                background: #fffbf0;
+            }
+
+        @@media (max-width: 768px) {
+            .login-container
+
+        {
+            flex-direction: column;
+            height: auto;
+            max-height: none;
+        }
+
+        .login-left {
+            padding: 40px 30px;
+        }
+
+        .register-prompt {
+            display: none;
+        }
+
+        .login-right {
+            padding: 40px 30px;
+        }
+
+        .logo h1 {
+            font-size: 36px;
+        }
+
+        .welcome-text h2 {
+            font-size: 24px;
+        }
+
+        .login-header h2 {
+            font-size: 24px;
+        }
+
+        .form-options {
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .quick-links {
+            flex-direction: column;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <div class="logo">
+                <h1><span>MULTI</span>SHOP</h1>
+            </div>
+            <div class="welcome-text">
+                <h2>Tekrar Hoş Geldiniz!</h2>
+                <p>Trend koleksiyonlarımızı keşfetmeye devam edin. Hesabınıza giriş yaparak özel fırsatlardan yararlanın.</p>
+            </div>
+            <div class="register-prompt">
+                <p>Henüz hesabınız yok mu?</p>
+                <a href="/Register/Index" class="register-btn-outline">Hemen Kayıt Ol</a>
+            </div>
+        </div>
+
+        <div class="login-right">
+            <div class="login-header">
+                <h2>Giriş Yap</h2>
+                <p>Hesabınıza giriş yapın ve alışverişe başlayın</p>
+            </div>
+
+            <form id="loginForm" method="post">
+                <div class="form-group">
+                    <label for="username">Kullanıcı Adı</label>
+                    <input type="text" id="username" placeholder="Kullanıcı adınızı girin" required asp-for="Username">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Şifre</label>
+                    <input type="password" id="password" placeholder="Şifrenizi girin" required asp-for="Password">
+                </div>
+
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Beni Hatırla</label>
+                    </div>
+                    <a href="#" class="forgot-password">Şifremi Unuttum?</a>
+                </div>
+
+                <button type="submit" class="submit-btn">Giriş Yap</button>
+
+                <div class="divider">
+                    <span>veya</span>
+                </div>
+
+                <div class="quick-links">
+                    <a href="/Default/Index" class="quick-link">📱 Misafir Alışveriş</a>
+                    <a href="#" class="quick-link">🛍️ Kampanyalar</a>
+                </div>
+
+                <div class="register-link">
+                    Hesabınız yok mu?<a href="/Register/Index">Kayıt Olun</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>

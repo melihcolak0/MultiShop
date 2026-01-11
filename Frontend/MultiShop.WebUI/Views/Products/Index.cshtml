@@ -1,0 +1,641 @@
+﻿
+@{
+    ViewData["Title"] = "Ürünlerimiz";
+    Layout = "~/Views/UILayout/Index.cshtml";
+
+    int currentPageSize = !string.IsNullOrEmpty(Context.Request.Query["PageSize"])
+        ? int.Parse(Context.Request.Query["PageSize"])
+        : 10;
+     
+    var pageQuery = Context.Request.Query["Page"].FirstOrDefault();
+    int currentPage = 1;
+
+    if (!string.IsNullOrEmpty(pageQuery) && int.TryParse(pageQuery, out int parsedPage))
+    {
+        currentPage = parsedPage;
+    }
+
+    var priceValue = Context.Request.Query["Price"].ToString();
+    decimal? maxPrice = !string.IsNullOrEmpty(priceValue) ? decimal.Parse(priceValue) : (decimal?)null;
+}
+
+<style>
+    /* Range input genel stil */
+    input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 80%;
+        height: 6px;
+        background: transparent;
+        outline: none;
+        margin: 15px auto 0 auto;
+        display: block;
+    }
+
+        /* Chrome, Edge, Safari - Track */
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(to right, #FFD333, #FFD333);
+            border-radius: 4px;
+        }
+
+        /* Chrome, Edge, Safari - Thumb */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #FFD333;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin-top: -7px; /* (20px - 6px) / 2 = 7px */
+        }
+
+            input[type="range"]::-webkit-slider-thumb:hover {
+                background: #f0c020;
+                transform: scale(1.1);
+            }
+
+        /* Firefox - Track */
+        input[type="range"]::-moz-range-track {
+            width: 100%;
+            height: 6px;
+            background: #FFD333;
+            border-radius: 4px;
+        }
+
+        /* Firefox - Thumb */
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #FFD333;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+            input[type="range"]::-moz-range-thumb:hover {
+                background: #f0c020;
+                transform: scale(1.1);
+            }
+
+        /* IE/Edge - Track */
+        input[type="range"]::-ms-track {
+            width: 100%;
+            height: 6px;
+            background: transparent;
+            border-color: transparent;
+            color: transparent;
+        }
+
+        input[type="range"]::-ms-fill-lower {
+            background: #FFD333;
+            border-radius: 4px;
+        }
+
+        input[type="range"]::-ms-fill-upper {
+            background: #FFD333;
+            border-radius: 4px;
+        }
+
+        /* IE/Edge - Thumb */
+        input[type="range"]::-ms-thumb {
+            width: 20px;
+            height: 20px;
+            background: #FFD333;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+    #filterForm {
+        text-align: center;
+    }
+
+        #filterForm label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+    #priceValue {
+        color: #000000;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30" style="border-radius: 16px;">
+                <a class="breadcrumb-item text-dark" href="/Default/Index">Ana Sayfa</a>
+                <span class="breadcrumb-item active">Ürünlerimiz</span>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-3 col-md-4">
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">FİYATA GÖRE FİLTRELE</span></h5>
+            <div class="bg-light p-4 mb-30" style="border-radius: 16px;">
+                <form id="filterForm" method="get">
+                    <label for="priceRange">Fiyat Aralığı: <span id="priceValue"></span></label>
+                    <input type="range" class="form-range" id="priceRange" name="Price"
+                           min="@ViewBag.MinPrice"
+                           max="@ViewBag.MaxPrice"
+                           step="1"
+                           value="@(string.IsNullOrEmpty(Context.Request.Query["Price"]) ? ViewBag.MaxPrice.ToString() : Context.Request.Query["Price"])">
+                </form>
+            </div>
+        </div>
+      
+        <div class="col-lg-9 col-md-8">
+            <div class="row pb-3">
+                <div class="col-12 pb-1">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div>
+                            <button class="btn btn-sm btn-light" onclick="changeViewMode('grid')" style="border-radius: 5px;">
+                                <i class="fa fa-th-large"></i>
+                            </button>
+                            <button class="btn btn-sm btn-light ml-2" onclick="changeViewMode('list')" style="border-radius: 5px;">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <div class="mr-3 flex-grow-1">
+                                <form method="get" id="searchForm" class="input-group">
+                                    <input type="text"
+                                           name="SearchText"
+                                           class="form-control form-control-sm"
+                                           placeholder="Ara..."
+                                           value="@(Context.Request.Query["SearchText"])"
+                                           style="width: 1000px; border-radius: 5px;"/>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm btn-primary" type="submit" style="border-radius: 5px;">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div>
+                                <form id="pageSizeForm" method="get" class="form-inline">
+                                    <label for="pageSizeSelect" class="mr-2 mb-0">Sayfa başına ürün:</label>                                   
+                                    <select id="pageSizeSelect" name="PageSize"
+                                            class="form-control form-control-sm"
+                                            onchange="this.form.submit()" style="border-radius: 5px;">
+
+                                        @if (currentPageSize == 10)
+                                        {
+                                            <option value="10" selected>10</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="10">10</option>
+                                        }
+
+                                        @if (currentPageSize == 20)
+                                        {
+                                            <option value="20" selected>20</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="20">20</option>
+                                        }
+
+                                        @if (currentPageSize == 50)
+                                        {
+                                            <option value="50" selected>50</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="50">50</option>
+                                        }
+
+                                        @if (currentPageSize == 100)
+                                        {
+                                            <option value="100" selected>100</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="100">100</option>
+                                        }
+                                    </select>
+                                    <input type="hidden" name="Page" value="1" />
+                                    <input type="hidden" name="SearchText" value="@(Context.Request.Query["SearchText"])"/>
+                                    <input type="hidden" name="ViewMode" value="@(Context.Request.Query["ViewMode"])"/>
+                                    <input type="hidden" name="Price" value="@(Context.Request.Query["Price"])"/>
+                                    <input type="hidden" name="Color" value="@(Context.Request.Query["Color"])"/>
+                                    <input type="hidden" name="Size" value="@(Context.Request.Query["Size"])"/>
+                                    <input type="hidden" name="CategoryId" value="@(Context.Request.Query["CategoryId"])"/>
+                                    <input type="hidden" name="Sort" value="@(Context.Request.Query["Sort"])"/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @await Component.InvokeAsync("_ProductListByModeProductComponent",
+                    new {
+                        filter = new ResultProductByFilterDTO
+                        {
+                            CategoryId = Context.Request.Query["CategoryId"],
+                            ViewMode = Context.Request.Query["ViewMode"],
+                            Page = currentPage,
+                            PageSize = currentPageSize,
+                            MinPrice = 0,
+                            MaxPrice = maxPrice,
+                            SearchText = Context.Request.Query["SearchText"]
+                        }
+                    })
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const priceRange = document.getElementById('priceRange');
+    const priceValue = document.getElementById('priceValue');
+
+    const formatter = new Intl.NumberFormat('tr-TR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    function updatePriceValue() {
+        const min = formatter.format(Number(priceRange.min));
+        const max = formatter.format(Number(priceRange.value));
+
+        priceValue.textContent = `${min} ₺ - ${max} ₺`;
+    }
+
+    priceRange.addEventListener('input', updatePriceValue);
+
+    priceRange.addEventListener('change', () => {
+        const url = new URL(window.location.href);
+        url.searchParams.set("Price", priceRange.value);
+        url.searchParams.set("Page", 1);
+        window.location.href = url.toString();
+    });
+
+    updatePriceValue();
+
+    function changeViewMode(mode) {
+        const url = new URL(window.location.href);
+
+        url.searchParams.set("ViewMode", mode);
+        url.searchParams.set("Page", 1);
+
+        window.location.href = url.toString();
+    }
+</script>
+
+@*-----------------Default----------------------------------
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/Default/Index">Ana Sayfa</a>             
+                <span class="breadcrumb-item active">Ürünlerimiz</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Shop Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <!-- Shop Sidebar Start -->
+        <div class="col-lg-3 col-md-4">
+            <!-- Price Start -->
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span></h5>
+            <div class="bg-light p-4 mb-30">
+                <form>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" checked id="price-all">
+                        <label class="custom-control-label" for="price-all">All Price</label>
+                        <span class="badge border font-weight-normal">1000</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" id="price-1">
+                        <label class="custom-control-label" for="price-1">$0 - $100</label>
+                        <span class="badge border font-weight-normal">150</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" id="price-2">
+                        <label class="custom-control-label" for="price-2">$100 - $200</label>
+                        <span class="badge border font-weight-normal">295</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" id="price-3">
+                        <label class="custom-control-label" for="price-3">$200 - $300</label>
+                        <span class="badge border font-weight-normal">246</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" id="price-4">
+                        <label class="custom-control-label" for="price-4">$300 - $400</label>
+                        <span class="badge border font-weight-normal">145</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <input type="checkbox" class="custom-control-input" id="price-5">
+                        <label class="custom-control-label" for="price-5">$400 - $500</label>
+                        <span class="badge border font-weight-normal">168</span>
+                    </div>
+                </form>
+            </div>
+            <!-- Price End -->
+            <!-- Color Start -->
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by color</span></h5>
+            <div class="bg-light p-4 mb-30">
+                <form>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" checked id="color-all">
+                        <label class="custom-control-label" for="price-all">All Color</label>
+                        <span class="badge border font-weight-normal">1000</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" id="color-1">
+                        <label class="custom-control-label" for="color-1">Black</label>
+                        <span class="badge border font-weight-normal">150</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" id="color-2">
+                        <label class="custom-control-label" for="color-2">White</label>
+                        <span class="badge border font-weight-normal">295</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" id="color-3">
+                        <label class="custom-control-label" for="color-3">Red</label>
+                        <span class="badge border font-weight-normal">246</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" id="color-4">
+                        <label class="custom-control-label" for="color-4">Blue</label>
+                        <span class="badge border font-weight-normal">145</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <input type="checkbox" class="custom-control-input" id="color-5">
+                        <label class="custom-control-label" for="color-5">Green</label>
+                        <span class="badge border font-weight-normal">168</span>
+                    </div>
+                </form>
+            </div>
+            <!-- Color End -->
+            <!-- Size Start -->
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by size</span></h5>
+            <div class="bg-light p-4 mb-30">
+                <form>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" checked id="size-all">
+                        <label class="custom-control-label" for="size-all">All Size</label>
+                        <span class="badge border font-weight-normal">1000</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" id="size-1">
+                        <label class="custom-control-label" for="size-1">XS</label>
+                        <span class="badge border font-weight-normal">150</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" id="size-2">
+                        <label class="custom-control-label" for="size-2">S</label>
+                        <span class="badge border font-weight-normal">295</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" id="size-3">
+                        <label class="custom-control-label" for="size-3">M</label>
+                        <span class="badge border font-weight-normal">246</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input" id="size-4">
+                        <label class="custom-control-label" for="size-4">L</label>
+                        <span class="badge border font-weight-normal">145</span>
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <input type="checkbox" class="custom-control-input" id="size-5">
+                        <label class="custom-control-label" for="size-5">XL</label>
+                        <span class="badge border font-weight-normal">168</span>
+                    </div>
+                </form>
+            </div>
+            <!-- Size End -->
+        </div>
+        <!-- Shop Sidebar End -->
+        <!-- Shop Product Start -->
+        <div class="col-lg-9 col-md-8">
+            <div class="row pb-3">
+                <div class="col-12 pb-1">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div>
+                            <button class="btn btn-sm btn-light"><i class="fa fa-th-large"></i></button>
+                            <button class="btn btn-sm btn-light ml-2"><i class="fa fa-bars"></i></button>
+                        </div>
+                        <div class="ml-2">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Sorting</button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">Latest</a>
+                                    <a class="dropdown-item" href="#">Popularity</a>
+                                    <a class="dropdown-item" href="#">Best Rating</a>
+                                </div>
+                            </div>
+                            <div class="btn-group ml-2">
+                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Showing</button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">10</a>
+                                    <a class="dropdown-item" href="#">20</a>
+                                    <a class="dropdown-item" href="#">30</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img class="img-fluid w-100" src="/online-shop-website-template/img/product-1.jpg" alt="">
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small>(99)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img class="img-fluid w-100" src="/online-shop-website-template/img/product-2.jpg" alt="">
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star-half-alt text-primary mr-1"></small>
+                                <small>(99)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img class="img-fluid w-100" src="/online-shop-website-template/img/product-3.jpg" alt="">
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star-half-alt text-primary mr-1"></small>
+                                <small class="far fa-star text-primary mr-1"></small>
+                                <small>(99)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img class="img-fluid w-100" src="/online-shop-website-template/img/product-4.jpg" alt="">
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="far fa-star text-primary mr-1"></small>
+                                <small class="far fa-star text-primary mr-1"></small>
+                                <small>(99)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img class="img-fluid w-100" src="/online-shop-website-template/img/product-5.jpg" alt="">
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small>(99)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img class="img-fluid w-100" src="/online-shop-website-template/img/product-6.jpg" alt="">
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star-half-alt text-primary mr-1"></small>
+                                <small>(99)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>               
+                <div class="col-12">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- Shop Product End -->
+    </div>
+</div>
+<!-- Shop End --> *@

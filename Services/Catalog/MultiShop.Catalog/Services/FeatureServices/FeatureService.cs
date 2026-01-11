@@ -1,0 +1,67 @@
+﻿using AutoMapper;
+using MongoDB.Driver;
+using MultiShop.Catalog.DTOs.FeatureDTOs;
+using MultiShop.Catalog.Entities;
+using MultiShop.Catalog.Settings;
+
+namespace MultiShop.Catalog.Services.FeatureServices
+{
+    public class FeatureService : IFeatureService
+    {
+        private readonly IMongoCollection<Feature> _featureCollection;
+        private readonly IMapper _mapper;
+
+        public FeatureService(IMapper mapper, IDatabaseSettings _databaseSettings)
+        {
+            var client = new MongoClient(_databaseSettings.ConnectionString);
+            var database = client.GetDatabase(_databaseSettings.DatabaseName);
+            _featureCollection = database.GetCollection<Feature>(_databaseSettings.FeatureCollectionName);
+            _mapper = mapper;
+        }
+
+        public async Task ChangeFeatureStatusAsync(string id)
+        {
+            var value = await _featureCollection.Find(x => x.FeatureId == id).FirstOrDefaultAsync();
+            if (value != null)
+            {
+                value.Status = !value.Status;
+                await _featureCollection.FindOneAndReplaceAsync(x => x.FeatureId == id, value);
+            }
+        }
+
+        public async Task CreateFeatureAsync(CreateFeatureDTO createFeatureDTO)
+        {
+            var value = _mapper.Map<Feature>(createFeatureDTO);
+            await _featureCollection.InsertOneAsync(value);
+        }
+
+        public async Task DeleteFeatureAsync(string id)
+        {
+            await _featureCollection.DeleteOneAsync(x => x.FeatureId == id);
+        }
+
+        public async Task<List<ResultFeatureDTO>> GetAllActiveFeaturesAsync()
+        {
+            var values = await _featureCollection.Find(x => x.Status == true).ToListAsync();
+            return _mapper.Map<List<ResultFeatureDTO>>(values);
+        }
+
+        public async Task<List<ResultFeatureDTO>> GetAllFeatureAsync()
+        {
+            var values = await _featureCollection.Find(x => true).ToListAsync();
+            return _mapper.Map<List<ResultFeatureDTO>>(values);
+        }
+
+        public async Task<GetFeatureDTO> GetFeatureByIdAsync(string id)
+        {
+            var value = await _featureCollection.Find(x => x.FeatureId == id).FirstOrDefaultAsync();
+            return _mapper.Map<GetFeatureDTO>(value);
+        }
+
+        public async Task UpdateFeatureAsync(UpdateFeatureDTO updateFeatureDTO)
+        {
+            var value = _mapper.Map<Feature>(updateFeatureDTO);
+            await _featureCollection.FindOneAndReplaceAsync(x => x.FeatureId == updateFeatureDTO.FeatureId, value);
+        }
+    }
+}

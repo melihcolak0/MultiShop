@@ -1,0 +1,90 @@
+﻿@model List<ResultUserDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary">
+            <i class="fa fa-users"></i> Kullanıcılar
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-users"></i> Kullanıcılar</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="chart-box">
+                    <h4>Kullanıcılar'ın Listelenmesi</h4>
+                    <p>Kullanıcılar ile ilgili listeleme işlemlerini aşağıdan gerçekleştirebilirsiniz.</p>
+                    <div class="bs-example" data-example-id="hoverable-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Adı ve Soyadı</th>
+                                    <th>Kullanıcı Adı</th>
+                                    <th>E-Posta</th>
+                                    <th>E-Posta Onayı</th>
+                                    <th>Telefon Numarası</th>
+                                    <th>Telefon Numarası Onayı</th>
+                                    <th>İki Faktörlü Doğrulama</th>
+                                    <th>Kargo Bilgileri</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    count++;
+                                    <tr>
+                                        <th scope="row">@count</th>                                       
+                                        <td>@item.name @item.surname</td>
+                                        <td>@item.userName</td>
+                                        <td>@item.email</td>
+                                        @if (item.emailConfirmed)
+                                        {
+                                            <td><span style="background:#28a745; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Onaylanmış</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span style="background:#dc3545; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Onaylanmamış</span></td>
+                                        }
+                                        <td>@item.phoneNumber</td>
+                                        @if (item.phoneNumberConfirmed)
+                                        {
+                                            <td><span style="background:#1c0166; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Onaylanmış</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span style="background:#009eb3; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Onaylanmamış</span></td>
+                                        }
+                                        @if (item.twoFactorEnabled)
+                                        {
+                                            <td><span style="background:#016632; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Aktif</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span style="background:#bab702; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Pasif</span></td>
+                                        }
+                                        <td>
+                                            <a href="/Admin/User/GetUserCargoDetails?userId=@item.id"
+                                               class="btn btn-primary btn-rounded btn-sm">
+                                                <i class="bi bi-eye"></i> Kargo Bilgileri
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

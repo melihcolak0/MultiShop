@@ -1,0 +1,159 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>MultiShop Admin Paneli</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/MainDownload-OvioAdmin-html5-template/html/bootstrap/css/bootstrap.min.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Template style -->
+    <link rel="stylesheet" href="/MainDownload-OvioAdmin-html5-template/html/dist/css/style.css">
+    <link rel="stylesheet" href="/MainDownload-OvioAdmin-html5-template/html/tables/et-line-font/et-line-font.css">
+    <link rel="stylesheet" href="/MainDownload-OvioAdmin-html5-template/html/tables/font-awesome/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="/MainDownload-OvioAdmin-html5-template/html/dist/weather/weather-icons.min.css">
+    <link type="text/css" rel="stylesheet" href="/MainDownload-OvioAdmin-html5-template/html/dist/weather/weather-icons-wind.min.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</head>
+
+<body class="sidebar-mini">
+    <div class="wrapper">
+
+        <!-- Main Header -->
+        <header class="main-header dark-bg">
+
+            <!-- Logo -->
+            <a href="/Dashboard/Index" class="logo dark-bg">
+                <!-- mini logo (sidebar küçük hali) -->
+                <span class="logo-lg" style="font-size: 22px; font-weight: bold; color: white;">
+                    MULTI SHOP
+                </span>
+
+                <!-- normal logo -->
+                <span class="logo-mini" style="font-size: 18px; font-weight: bold; color: white;">
+                    MS
+                </span>
+            </a>
+            
+            @await Component.InvokeAsync("_NavbarAdminLayoutComponent")
+
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar dark-bg">
+            <section class="sidebar">
+                <div class="user-panel black-bg">
+                    <div class="pull-left image"> <img src="https://t3.ftcdn.net/jpg/00/65/75/68/360_F_65756860_GUZwzOKNMUU3HldFoIA44qss7ZIrCG8I.jpg" class="img-circle" alt="User Image"> </div>
+                    <div class="pull-left info">
+                        <p>Admin Paneli</p>
+                        <a href="#"><i class="fa fa-circle"></i> Aktif</a>
+                    </div>
+                </div>
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu" data-widget="tree">                    
+                    <li> <a href="/Admin/Dashboard/Index"> <i class="fa fa-home"></i> <span>Dashboard</span></a> </li>
+                    <li> <a href="/Admin/About/Index"> <i class="fa fa-info-circle"></i> <span>Hakkında</span></a> </li>
+                    <li> <a href="/Admin/Category/Index"> <i class="fa fa-list"></i> <span>Kategoriler</span></a> </li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-tags"></i> <span>Ürün Özellikleri</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/Admin/Product/Index"><i class="fa fa-angle-right"></i> Ürünler</a></li>
+                            <li><a href="/Admin/ProductImage/Index"><i class="fa fa-angle-right"></i> Ürün Resimleri</a></li>
+                            <li><a href="/Admin/ProductDetail/Index"><i class="fa fa-angle-right"></i> Ürün Detayları</a></li>
+                        </ul>
+                    </li>
+                    <li> <a href="/Admin/Slider/Index"> <i class="fa fa-images"></i> <span>Slider</span></a> </li>
+                    <li> <a href="/Admin/SpecialOffer/Index"> <i class="fa fa-gift"></i> <span>Özel Teklifler</span></a> </li>
+                    <li> <a href="/Admin/Feature/Index"> <i class="fa fa-star"></i> <span>Özellikler</span></a> </li>
+                    <li> <a href="/Admin/UserComment/Index"> <i class="fa fa-comment"></i> <span>Yorumlar</span></a> </li>
+                    <li> <a href="/Admin/User/Index"> <i class="fa fa-users"></i> <span>Kullanıcılar</span></a> </li>
+                    <li> <a href="/Admin/Order/Index"> <i class="fa fa-shopping-cart"></i> <span>Siparişler</span></a> </li>
+                   @*  <li> <a href="#"> <i class="fa fa-money"></i> <span>Kasa Bilgileri</span></a> </li> *@
+                    <li> <a href="/Admin/Statistic/Index"> <i class="fa fa-bar-chart"></i> <span>İstatistikler</span></a> </li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-truck"></i> <span>Kargolar</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/Admin/CargoCompany/Index"><i class="fa fa-angle-right"></i> Kargo Şirketleri</a></li>
+                            <li><a href="/Admin/CargoCustomer/Index"><i class="fa fa-angle-right"></i> Kargo Müşterileri</a></li>
+                            <li><a href="/Admin/CargoDetail/Index"><i class="fa fa-angle-right"></i> Kargo Detayları</a></li>
+                            <li><a href="/Admin/CargoOperation/Index"><i class="fa fa-angle-right"></i> Kargo Operasyonları</a></li>
+                        </ul>
+                    </li>
+                    <li> <a href="/Admin/Discount/Index"> <i class="fa fa-percent"></i> <span>İndirimler</span></a> </li>
+                   @*  <li> <a href="#"> <i class="fa fa-image"></i> <span>Görseller</span></a> </li> *@
+                    <li> <a href="/Admin/Message/Index"> <i class="fa fa-envelope"></i> <span>Mesajlar</span></a> </li>
+                    <li> <a href="/Admin/Contact/Index"> <i class="fa fa-phone"></i> <span>İletişim</span></a> </li>
+                    @* <li> <a href="#"> <i class="fa fa-cogs"></i> <span>Ayarlar</span></a> </li> *@
+                    <li> <a href="/Default/Index"> <i class="fa fa-globe"></i> <span>Siteye Git</span></a> </li>
+                    <li> <a href="/LogIn/LogOut"> <i class="fa fa-sign-out"></i> <span>Çıkış Yap</span></a> </li>
+                </ul>
+                <!-- sidebar-menu -->
+            </section>
+        </aside>
+
+        @RenderBody()
+
+        <!-- Main Footer -->
+        <footer class="main-footer dark-bg">
+            <div class="pull-right hidden-xs"> Version 1.0</div>
+            Copyright &copy; @DateTime.Now.Year MultiShop Admin. Tüm hakları saklıdır. Connection: <strong id="connstatus"></strong>
+        </footer>
+    </div>
+    <!-- wrapper -->
+    <!-- jQuery -->
+    <script src="/MainDownload-OvioAdmin-html5-template/html/dist/js/jquery.min.js"></script>
+    <script src="/MainDownload-OvioAdmin-html5-template/html/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/MainDownload-OvioAdmin-html5-template/html/dist/js/ovio.js"></script>
+
+    <script src="~/microsoft/signalr/dist/browser/signalr.min.js"></script>   
+
+    <script>
+        $(document).ready(function () {
+
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("https://localhost:7156/SignalRHub")
+                .withAutomaticReconnect()
+                .build();          
+
+            connection.on("ReceiveStatistics", function (data) {
+            $("#messageCountByUserId").text(data.messageCount);
+            $("#commentCount").text(data.commentCount);
+        });
+
+            connection.start()
+                .then(() => {
+                    $("#connstatus").text("Connected");
+
+                    setInterval(function () {
+                        connection.invoke("SendStatistics")
+                            .catch(err => console.error(err.toString()));
+                    }, 5000);
+                })
+                .catch(err => {
+                    console.error(err.toString());
+                    $("#connstatus").text("Disconnected");
+                });
+        });
+    </script>    
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

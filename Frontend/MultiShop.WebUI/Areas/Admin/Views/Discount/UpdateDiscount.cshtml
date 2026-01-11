@@ -1,0 +1,57 @@
+﻿@model GetCouponDTO
+
+@{
+    ViewData["Title"] = "UpdateDiscount";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    .center-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+</style>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary text-center">
+            <i class="fa fa-ticket"></i> İndirim Kuponları
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-ticket"></i> İndirim Kuponları</li>
+            <li class="active"><i class="bi bi-pencil-square"></i> Kupon Güncelleme</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="center-container">
+            <div class="col-md-6">
+                <div class="chart-box">
+                    <h4>Kupon Güncelleme</h4>
+                    <br />
+                    <form method="post">
+                        <input type="hidden" asp-for="CouponId" />
+                        <input type="hidden" asp-for="ValidDate" />
+                        <input type="hidden" asp-for="IsActive" />
+                        <div class="form-group">
+                            <label>Kupon Kodu</label>
+                            <input class="form-control" type="text" asp-for="CouponCode">
+                        </div>
+                        <div class="form-group">
+                            <label>İndirim Oranı (%)</label>
+                            <input class="form-control" type="text" asp-for="Rate">
+                        </div>
+                        <button type="submit" class="btn btn-success btn-rounded btn-sm">
+                            <i class="bi bi-pencil-square"></i> Güncelle
+                        </button>
+                        <a href="/Admin/Discount/Index" class="btn btn-default btn-rounded btn-sm ">
+                            <i class="fa fa-arrow-left"></i> Geri
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,78 @@
+﻿@model List<ResultProductImageWithProductDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary">
+            <i class="fa fa-image"></i> Ürün Resimleri
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-image"></i> Ürün Resimleri</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="chart-box">
+                    <h4>Ürün Resimleri'nin Listelenmesi</h4>
+                    <p>Ürün Resimleri ile ilgili listeleme, ekleme, silme ve güncelleme işlemlerini aşağıdan gerçekleştirebilirsiniz.</p>
+                    <div class="bs-example" data-example-id="hoverable-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Ürün Resimleri</th>
+                                    <th>Ürün Adı</th>                                
+                                    <th>Sil</th>
+                                    <th>Güncelle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    count++;
+                                    <tr>
+                                        <th scope="row">@count</th>
+                                        <td>
+                                            <img src="@item.Image1Url"
+                                                 style="width: 90px; height: 50px; border-radius: 12px; box-shadow: 0 0 6px rgba(0,0,0,0.2); object-fit: cover;" />
+                                            <img src="@item.Image2Url"
+                                                 style="width: 90px; height: 50px; border-radius: 12px; box-shadow: 0 0 6px rgba(0,0,0,0.2); object-fit: cover;" />
+                                            <img src="@item.Image3Url"
+                                                 style="width: 90px; height: 50px; border-radius: 12px; box-shadow: 0 0 6px rgba(0,0,0,0.2); object-fit: cover;" />
+                                        </td>
+                                        <td>@item.ProductName</td>
+                                        <td>
+                                            <a href="/Admin/ProductImage/DeleteProductImage/@item.ProductImageId"
+                                               class="btn btn-danger btn-rounded btn-sm">
+                                                <i class="bi bi-trash"></i> Sil
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/ProductImage/UpdateProductImage/@item.ProductImageId"
+                                               class="btn btn-warning btn-rounded btn-sm">
+                                                <i class="bi bi-pencil-square"></i> Güncelle
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+                        <a href="/Admin/ProductImage/CreateProductImage" class="btn btn-primary btn-rounded btn-sm">
+                            <i class="bi bi-plus-circle"></i> Yeni Ürün Resmi Ekle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

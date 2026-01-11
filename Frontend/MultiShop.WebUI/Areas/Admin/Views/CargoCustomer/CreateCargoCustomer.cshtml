@@ -1,0 +1,83 @@
+﻿@model CreateCargoCustomerDTO
+
+@{
+    ViewData["Title"] = "CreateCargoCustomer";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    .center-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .fixed-dropdown {
+        min-height: 35px !important;
+        height: auto !important;
+    }
+</style>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary text-center">
+            <i class="fa fa-address-book"></i> Kargo Müşterileri
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-address-book"></i> Kargo Müşterileri</li>
+            <li class="active"><i class="bi bi-plus-circle"></i> Yeni Kargo Müşterisi Ekleme</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="center-container">
+            <div class="col-md-6">
+                <div class="chart-box">
+                    <h4>Yeni Kargo Müşterisi Ekleme</h4>
+                    <br />
+                    <form method="post">
+                        <div class="form-group">
+                            <label>Kullanıcı</label>
+                            @Html.DropDownListFor(x => x.CargoUserId, (List<SelectListItem>)ViewBag.Users, new { @class = "form-control fixed-dropdown" })
+                        </div>
+                        <div class="form-group">
+                            <label>Adı</label>
+                            <input class="form-control" type="text" asp-for="Name">
+                        </div>
+                        <div class="form-group">
+                            <label>Soyadı</label>
+                            <input class="form-control" type="text" asp-for="Surname">
+                        </div>
+                        <div class="form-group">
+                            <label>E-posta</label>
+                            <input class="form-control" type="email" asp-for="Email">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefon Numarası</label>
+                            <input class="form-control" type="text" asp-for="Phone">
+                        </div>
+                        <div class="form-group">
+                            <label>İl</label>
+                            <input class="form-control" type="text" asp-for="City">
+                        </div>
+                        <div class="form-group">
+                            <label>İlçe</label>
+                            <input class="form-control" type="text" asp-for="District">
+                        </div>
+                        <div class="form-group">
+                            <label>Adres</label>
+                            <textarea class="form-control" asp-for="Address" rows="5"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-rounded btn-sm">
+                            <i class="bi bi-plus-circle"></i> Ekle
+                        </button>
+                        <a href="/Admin/CargoCustomer/Index" class="btn btn-default btn-rounded btn-sm">
+                            <i class="fa fa-arrow-left"></i> Geri
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

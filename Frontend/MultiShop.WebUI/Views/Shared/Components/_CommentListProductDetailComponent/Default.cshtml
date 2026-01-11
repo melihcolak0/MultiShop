@@ -1,0 +1,34 @@
+﻿@model List<ResultUserCommentDTO>
+
+<div class="col-md-6">
+
+
+    @if(Model.Count != 0)
+    {
+        <h6 class="mb-4">Bu ürün için @Model.Count() değerlendirme bulunmaktadır.</h6>
+        @foreach (var item in Model)
+        {
+            <div class="media mb-4">
+                <img src="@item.ImageUrl"
+                     alt="Image"
+                     class="img-fluid mr-3 mt-1"
+                     style="width: 45px; height: 45px; object-fit: cover; border-radius: 50%;">
+                <div class="media-body">
+                    <h6>@item.NameSurname<small> (<i>@item.CreatedDate.ToString("dd MMM yyyy - HH:mm")</i>)</small></h6>
+                    <div class="text-primary mb-2">
+                        @for (int a = 0; a < item.Rating; a++)
+                        {
+                            <i class="fas fa-star"></i>
+                        }
+                    </div>
+                    <p>@item.CommentDetail</p>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <h6 class="mb-4">Bu ürün için henüz bir değerlendirme bulunmamaktadır.</h6>
+    }
+
+</div>

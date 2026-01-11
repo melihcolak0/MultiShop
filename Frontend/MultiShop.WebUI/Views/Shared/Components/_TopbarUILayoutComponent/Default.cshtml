@@ -1,0 +1,329 @@
+﻿@model UILayoutInformationsModel
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+@functions {
+    string GetWeatherIcon(string weather)
+    {
+        if (string.IsNullOrEmpty(weather))
+            return "fa-cloud";
+        weather = weather.ToLower();
+        if (weather.Contains("rain"))
+            return "fa-cloud-rain";
+        if (weather.Contains("storm"))
+            return "fa-cloud-bolt";
+        if (weather.Contains("snow"))
+            return "fa-snowflake";
+        if (weather.Contains("sun") || weather.Contains("clear"))
+            return "fa-sun";
+        if (weather.Contains("cloud"))
+            return "fa-cloud";
+        return "fa-cloud";
+    }
+
+    string GetWeatherGradient(string weather)
+    {
+        if (string.IsNullOrEmpty(weather))
+            return "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
+        weather = weather.ToLower();
+        if (weather.Contains("rain"))
+            return "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)";
+        if (weather.Contains("storm"))
+            return "linear-gradient(135deg, #434343 0%, #000000 100%)";
+        if (weather.Contains("snow"))
+            return "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)";
+        if (weather.Contains("sun") || weather.Contains("clear"))
+            return "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)";
+        if (weather.Contains("cloud"))
+            return "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)";
+        return "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
+    }
+}
+
+<style>
+    .exchange-topbar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        /* background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); */
+        background: linear-gradient(135deg, #ccc502 0%, #e3db02 100%);
+        padding: 8px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        color: black;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+
+    .exchange-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .exchange-divider {
+        width: 1px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .exchange-topbar i {
+        font-size: 13px;
+    }
+
+    .right-section {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 15px;
+    }
+
+    .weather-topbar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: @GetWeatherGradient(Model.Weather.data.current_weather);
+        padding: 8px 14px;
+        border-radius: 12px;
+        font-size: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        color: white;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .weather-topbar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+        }
+
+    .weather-icon-box {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .weather-topbar i {
+        font-size: 20px;
+        color: white;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+
+    .weather-text {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        line-height: 1.2;
+    }
+
+    .city-name {
+        font-weight: 600;
+        font-size: 12px;
+        opacity: 0.95;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding-right: 10px;
+        border-right: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+        .city-name::before {
+            content: "\f3c5";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 10px;
+        }
+
+    .temp {
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 1;
+        text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        padding-right: 10px;
+        border-right: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .weather-text small {
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        font-size: 11px;
+        text-transform: capitalize;
+    }
+
+    .customer-service {
+        text-align: right;
+    }
+</style>
+
+<!-- Topbar Start -->
+<div class="container-fluid">
+    <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+        <div class="col-lg-3">
+            <a href="" class="text-decoration-none">
+                <span class="h1 text-uppercase text-primary bg-dark px-2" style="border-radius: 8px 0 0 8px;">Multi</span>
+                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1" style="border-radius: 0 8px 8px 0;">Shop</span>
+            </a>
+        </div>
+        <div class="col-lg-3 col-6 text-left">
+            <form action="">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Ara..." style="border-radius: 5px;">
+                    <div class="input-group-append">
+                        <span class="input-group-text bg-transparent text-primary" style="border-radius: 5px;">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-6 col-6">
+            <div class="right-section">
+                <div class="weather-topbar">
+                    <div class="weather-icon-box">
+                        <i class="fa-solid @GetWeatherIcon(Model.Weather.data.current_weather)"></i>
+                    </div>
+                    <div class="weather-text">
+                        <span class="city-name">@Model.Weather.data.city</span>
+                        <span class="temp">@Model.Weather.data.temp°C</span>
+                        <small>@Model.Weather.data.current_weather</small>
+                    </div>
+                </div>
+                <div class="exchange-topbar">
+                    <div class="exchange-item">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                        <span>
+                            @Model.ExchangeUSDTRY.data.from_symbol/<strong>@Model.ExchangeUSDTRY.data.exchange_rate</strong>
+                        </span>
+                    </div>
+                    <div class="exchange-divider"></div>
+                    <div class="exchange-item">
+                        <i class="fa-solid fa-euro-sign"></i>
+                        <span>
+                            @Model.ExchangeEURTRY.data.from_symbol/<strong>@Model.ExchangeEURTRY.data.exchange_rate</strong>
+                        </span>
+                    </div>
+                </div>
+                <div class="customer-service">
+                    <p class="m-0">Müşteri Hizmetleri</p>
+                    <h5 class="m-0">+123 456 78 90</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Topbar End -->
+
+<!----------------En Eski------------------------------------->
+
+@* @model UILayoutInformationsModel
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+@functions {
+    string GetWeatherIcon(string weather)
+    {
+        if (string.IsNullOrEmpty(weather))
+            return "fa-cloud";
+
+        weather = weather.ToLower();
+
+        if (weather.Contains("rain"))
+            return "fa-cloud-rain";
+
+        if (weather.Contains("storm"))
+            return "fa-cloud-bolt";
+
+        if (weather.Contains("snow"))
+            return "fa-snowflake";
+
+        if (weather.Contains("sun") || weather.Contains("clear"))
+            return "fa-sun";
+
+        if (weather.Contains("cloud"))
+            return "fa-cloud";
+
+        return "fa-cloud";
+    }
+}
+
+<style>
+    .weather-topbar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #ffffff;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.08);
+    }
+
+        .weather-topbar i {
+            font-size: 20px;
+            color: #4a90e2;
+        }
+
+    .weather-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .city-name {
+        font-weight: 600;
+    }
+
+    .temp {
+        font-weight: 500;
+    }
+
+    .weather-text small {
+        color: #666;
+    }
+
+</style>
+
+<!-- Topbar Start -->
+<div class="container-fluid">
+    <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+        <div class="col-lg-4">
+            <a href="" class="text-decoration-none">
+                <span class="h1 text-uppercase text-primary bg-dark px-2" style="border-radius: 8px 0 0 8px;">Multi</span>
+                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1" style="border-radius: 0 8px 8px 0;">Shop</span>
+            </a>
+        </div>
+        <div class="col-lg-4 col-6 text-left">
+            <form action="">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Ara..." style="border-radius: 5px;">
+                    <div class="input-group-append">
+                        <span class="input-group-text bg-transparent text-primary" style="border-radius: 5px;">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-4 col-6 text-right">
+
+            <div class="weather-topbar">
+                <i class="fa-solid @GetWeatherIcon(Model.Weather.data.current_weather)"></i>
+
+                <div class="weather-text">
+                    <span class="city-name">@Model.Weather.data.city</span>
+                    <span class="temp">@Model.Weather.data.temp °C</span>
+                    <small>@Model.Weather.data.current_weather</small>
+                </div>
+            </div>
+
+            <p class="m-0">Müşteri Hizmetleri</p>
+            <h5 class="m-0">+123 456 78 90</h5>
+        </div>
+    </div>
+</div>
+<!-- Topbar End -->
+ *@

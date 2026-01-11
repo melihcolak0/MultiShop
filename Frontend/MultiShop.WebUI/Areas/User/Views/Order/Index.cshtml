@@ -1,0 +1,446 @@
+﻿@model List<ResultOrderByUserIdDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/User/Views/UserLayout/Index.cshtml";
+
+    int count = 0;
+    var lastWeekOrders = Model.Where(x => x.OrderDate >= DateTime.Now.AddDays(-7)).Count();
+    var unpaidOrders = Model.Count(x => !x.IsPaid);
+}
+
+<style>
+    .badge {
+        border-radius: 20px;
+        padding: 6px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+    }
+
+    .badge-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .badge-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .badge-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+    }
+
+    .badge-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+    }
+
+    /* YAZI BOYUTLARINI BÜYÜTME */
+    .card-title {
+        font-size: 22px !important;
+        font-weight: 600;
+    }
+
+    .order-count-badge {
+        background-color: #e3f2fd;
+        color: #1976d2;
+        padding: 5px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-left: 10px;
+    }
+
+    .table thead th {
+        font-size: 15px;
+        font-weight: 600;
+        padding: 14px;
+    }
+
+    .table tbody td {
+        font-size: 15px;
+        padding: 14px;
+        vertical-align: middle;
+    }
+
+    .order-total {
+        font-weight: 600;
+        color: #28a745;
+        font-size: 16px;
+    }
+
+    /* İstatistik Kartları */
+    .card-body p {
+        font-size: 14px;
+    }
+
+    .card-body h3 {
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    /* Boş Durum */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #6c757d;
+    }
+
+        .empty-state i {
+            font-size: 80px;
+            color: #dee2e6;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h5 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+        }
+
+    /* Butonlar */
+    .btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .btn-sm {
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+
+    /* Arama Kutusu */
+    .search-box input {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .filter-buttons .btn {
+        margin-right: 5px;
+        border-radius: 20px;
+        padding: 6px 16px;
+        font-size: 13px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+        cursor: pointer;
+    }
+
+    .card-header-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .search-box {
+        max-width: 300px;
+    }
+</style>
+
+<div class="content-wrapper">
+
+    <!-- Özet İstatistikler -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <div class="card" style="border-radius: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1" style="font-size: 18px; opacity: 0.9;">Toplam Sipariş</p>
+                            <h3 class="mb-0">@Model.Count</h3>
+                        </div>
+                        <i class="mdi mdi-cart" style="font-size: 48px; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card" style="border-radius: 16px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none;">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1" style="font-size: 18px; opacity: 0.9;">Toplam Harcama</p>
+                            <h3 class="mb-0">@Model.Sum(x => x.TotalPrice).ToString("N2") ₺</h3>
+                        </div>
+                        <i class="mdi mdi-cash-multiple" style="font-size: 48px; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>       
+        <div class="col-md-3">
+            <div class="card" style="border-radius: 16px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; border: none;">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1" style="font-size: 18px; opacity: 0.9;">Ödenmemiş Sipariş</p>
+                            <h3 class="mb-0">@unpaidOrders</h3>
+                        </div>
+                        <i class="mdi mdi-close-circle" style="font-size: 48px; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card" style="border-radius: 16px; background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); color: white; border: none;">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1" style="font-size: 18px; opacity: 0.9;">Son 7 Günde Verilen Sipariş</p>
+                            <h3 class="mb-0">@lastWeekOrders</h3>
+                        </div>
+                        <i class="mdi mdi-calendar-clock" style="font-size: 48px; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    
+                    <!-- Başlık ve Filtre Alanı -->
+                    <div class="card-header-actions">
+                        <div>
+                            <h4 class="card-title d-inline-block mb-0">
+                                Geçmiş Siparişlerim
+                                <span class="order-count-badge">@Model.Count Sipariş</span>
+                            </h4>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <!-- Arama Kutusu -->
+                            <div class="search-box mr-3">
+                                <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Sipariş ara...">
+                            </div>
+                            <!-- Filtre Butonları -->
+                            <div class="filter-buttons">
+                                <button class="btn btn-sm btn-outline-primary active" onclick="filterOrders('all')">
+                                    <i class="mdi mdi-format-list-bulleted"></i> Tümü
+                                </button>
+                                <button class="btn btn-sm btn-outline-success" onclick="filterOrders('paid')">
+                                    <i class="mdi mdi-check-circle"></i> Ödenenler
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="filterOrders('unpaid')">
+                                    <i class="mdi mdi-close-circle"></i> Ödenmeyenler
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        <!-- Tablo -->
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="ordersTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>
+                                            <i class="mdi mdi-cash"></i> Toplam Fiyat
+                                        </th>
+                                        <th>
+                                            <i class="mdi mdi-calendar"></i> Sipariş Tarihi
+                                        </th>
+                                        <th>
+                                            <i class="mdi mdi-check-circle"></i> Durum
+                                        </th>
+                                        <th class="text-center">
+                                            <i class="mdi mdi-cog"></i> İşlemler
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        count++;
+                                        <tr data-paid="@item.IsPaid.ToString().ToLower()">
+                                            <td>
+                                                <strong>@count</strong>
+                                            </td>
+                                            <td class="order-total">
+                                                @item.TotalPrice.ToString("N2") ₺
+                                            </td>
+                                            <td>
+                                                <i class="mdi mdi-clock-outline text-muted"></i>
+                                                @item.OrderDate.ToString("dd MMMM yyyy - HH:mm")
+                                            </td>
+                                            @if (item.IsPaid)
+                                            {
+                                                <td><label class="badge badge-success"><i class="mdi mdi-check"></i> Ödendi</label></td>
+                                            }
+                                            else
+                                            {
+                                                <td><label class="badge badge-danger"><i class="mdi mdi-close"></i> Ödenmedi</label></td>
+                                            }
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary" onclick="viewOrderDetails(@item.OrderId)" title="Detaylar">
+                                                    <i class="mdi mdi-eye"></i>
+                                                </button>
+                                                @if (!item.IsPaid)
+                                                {
+                                                    <button class="btn btn-sm btn-outline-success" onclick="payOrder(@item.OrderId)" title="Ödeme Yap">
+                                                        <i class="mdi mdi-credit-card"></i>
+                                                    </button>
+                                                }
+                                                <button class="btn btn-sm btn-outline-secondary" onclick="downloadInvoice(@item.OrderId)" title="Fatura İndir">
+                                                    <i class="mdi mdi-download"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Boş Durum -->
+                        <div class="empty-state">
+                            <i class="mdi mdi-cart-off"></i>
+                            <h5>Henüz siparişiniz yok</h5>
+                            <p class="text-muted">İlk siparişinizi vermek için alışverişe başlayın!</p>
+                            <a href="/shop" class="btn btn-primary mt-3">
+                                <i class="mdi mdi-shopping"></i> Alışverişe Başla
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Arama Fonksiyonu
+    document.getElementById('searchInput')?.addEventListener('keyup', function() {
+        const searchValue = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#ordersTable tbody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchValue) ? '' : 'none';
+        });
+    });
+
+    // Filtreleme Fonksiyonu
+    function filterOrders(filter) {
+        const rows = document.querySelectorAll('#ordersTable tbody tr');
+        const buttons = document.querySelectorAll('.filter-buttons .btn');
+
+        // Buton active durumunu güncelle
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        rows.forEach(row => {
+            const isPaid = row.getAttribute('data-paid');
+            if (filter === 'all') {
+                row.style.display = '';
+            } else if (filter === 'paid') {
+                row.style.display = isPaid === 'true' ? '' : 'none';
+            } else if (filter === 'unpaid') {
+                row.style.display = isPaid === 'false' ? '' : 'none';
+            }
+        });
+    }
+
+    // Sipariş Detayları
+    function viewOrderDetails(orderId) {
+        window.location.href = `/User/Order/Details/${orderId}`;
+    }
+
+    // Ödeme Yap
+    function payOrder(orderId) {
+        if (confirm('Bu siparişi ödemek istediğinizden emin misiniz?')) {
+            window.location.href = `/User/Payment/Pay/${orderId}`;
+        }
+    }
+
+    // Fatura İndir
+    function downloadInvoice(orderId) {
+        window.location.href = `/User/Order/DownloadInvoice/${orderId}`;
+    }
+</script>
+
+@* <style>
+    .badge {
+        border-radius: 20px;
+        padding: 6px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+    }
+
+    .badge-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .badge-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Geçmiş Siparişlerim</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Toplam Fiyat</th>
+                                    <th>Sipariş Tarihi</th>
+                                    <th>Ödendi Mi?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var item in Model)
+                                {
+                                    count++;
+                                    <tr>
+                                        <td>
+                                           @count
+                                        </td>
+                                        <td>
+                                            @item.TotalPrice.ToString("N2") ₺
+                                        </td>
+                                        <td>
+                                            @item.OrderDate.ToString("dd MMMM yyyy - HH:mm")
+                                        </td>
+                                        @if (item.IsPaid)
+                                        {
+                                            <td><label class="badge badge-success">Ödendi</label></td>
+                                        }
+                                        else
+                                        {
+                                            <td><label class="badge badge-danger">Ödenmedi</label></td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@

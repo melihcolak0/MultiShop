@@ -1,0 +1,77 @@
+﻿@model List<ResultCargoOperationDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary">
+            <i class="fa fa-cogs"></i> Kargo Operasyonları
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-cogs"></i> Kargo Operasyonları</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="chart-box">
+                    <h4>Kargo Operasyonları'nın Listelenmesi</h4>
+                    <p>Kargo Operasyonları ile ilgili listeleme, ekleme, silme ve güncelleme işlemlerini aşağıdan gerçekleştirebilirsiniz.</p>
+                    <div class="bs-example" data-example-id="hoverable-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Barkod</th>
+                                    <th>Operasyon Tarihi</th>
+                                    <th>Açıklama</th>
+                                    <th>Sil</th>
+                                    <th>Güncelle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    count++;
+                                    <tr>
+                                        <th scope="row">@count</th>
+                                        <td>@item.Barcode</td>
+                                        <td>@item.OperationDate.ToString("dd MMM yyyy - HH:mm")</td>
+                                        @if (!string.IsNullOrEmpty(item.Description))
+                                        {
+                                            <td>
+                                                @(item.Description.Length <= 25 ? item.Description : item.Description.Substring(0, 25) + "...")
+                                            </td>
+                                        }
+                                        <td>
+                                            <a href="/Admin/CargoOperation/DeleteCargoOperation/@item.CargoOperationId"
+                                               class="btn btn-danger btn-rounded btn-sm">
+                                                <i class="bi bi-trash"></i> Sil
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/CargoOperation/UpdateCargoOperation/@item.CargoOperationId"
+                                               class="btn btn-warning btn-rounded btn-sm">
+                                                <i class="bi bi-pencil-square"></i> Güncelle
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+                        <a href="/Admin/CargoOperation/CreateCargoOperation" class="btn btn-primary btn-rounded btn-sm">
+                            <i class="bi bi-plus-circle"></i> Yeni Kargo Operasyonu Ekle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

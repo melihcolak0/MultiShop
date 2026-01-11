@@ -1,0 +1,282 @@
+﻿@model BasketTotalDTO
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+<style>
+    .product-img-wrapper {
+        width: 60px;
+        min-width: 60px;
+        text-align: center;
+    }
+
+    .product-img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+    }
+
+    .product-name {
+        max-width: 260px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-left: 50px;
+    }
+
+    .table-wrapper {
+        border-radius: 16px;
+        overflow: hidden; /* 🔥 ŞART */
+        background: #fff;
+    }
+</style>
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30" style="border-radius: 16px;">
+                <a class="breadcrumb-item text-dark" href="#">Ana Sayfa</a>
+                <span class="breadcrumb-item active">Sepet</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Cart Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">        
+        <div class="col-lg-8 table-responsive mb-5">
+            @if (Model.BasketItems.Any())
+            {
+                <div class="table-wrapper">
+                    <table class="table table-light table-borderless table-hover text-center mb-0" >
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Ürün</th>
+                                <th>Fiyat</th>
+                                <th>Adet</th>
+                                <th>Toplam</th>
+                                <th>Kaldır</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-middle">
+                            @foreach(var item in Model.BasketItems)
+                            {
+                                <tr style="border-radius: 16px;">
+                                    <td class="align-middle">
+                                        <div class="d-flex align-items-center">
+                                            <div class="product-img-wrapper">
+                                                <img src="@item.ProductImageUrl"
+                                                     alt=""
+                                                     class="product-img" />
+                                            </div>
+
+                                            <div class="ms-2">
+                                                <div class="fw-bold product-name">@item.ProductName</div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="align-middle text-end">
+                                        @item.Price.ToString("N2") ₺
+                                    </td>
+
+                                    <td class="align-middle">
+                                        <div class="input-group quantity mx-auto" style="width: 110px;">
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="updateQuantity('@item.ProductId', -1)">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+
+                                            <input type="text"
+                                                   class="form-control form-control-sm bg-secondary border-0 text-center"
+                                                   value="@item.Quantity"
+                                                   readonly />
+
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="updateQuantity('@item.ProductId', 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+
+                                    <td class="align-middle text-end fw-bold text-success">
+                                        @((item.Price * item.Quantity).ToString("N2")) ₺
+                                    </td>
+
+                                    <td class="align-middle text-center">
+                                        <a class="btn btn-sm btn-danger" href="/ShoppingCart/RemoveBasketItem/@item.ProductId">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            
+                <div class="mt-4 text-start">
+                    <a href="/ShoppingCart/ClearBasket" style="border-radius: 10px;"
+                       class="btn btn-sm btn-danger px-3"
+                       onclick="return confirm('Sepetteki tüm ürünler silinsin mi?');">
+                        <i class="fa fa-trash mr-1"></i> Sepeti Temizle
+                    </a>
+                    <a href="/ShoppingCart/ClearDiscount" style="border-radius: 10px;"
+                       class="btn btn-sm btn-warning px-3 ml-2">
+                        <i class="fa fa-percent mr-1"></i> İndirimi Temizle
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="bg-light p-5 text-center rounded" style="border-radius: 16px;">
+                    <i class="fa fa-shopping-cart fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted mb-2">Sepetinizde ürün bulunmamaktadır</h5>
+                    <p class="text-muted mb-4">
+                        Sepetinize ürün eklemek için alışverişe devam edebilirsiniz.
+                    </p>
+                    <a href="/Products" class="btn btn-primary">
+                        Alışverişe Devam Et
+                    </a>
+                </div>
+            }
+        </div>
+        <div class="col-lg-4">
+            @if (Model.BasketItems.Any())
+            {
+                <form class="mb-30" asp-controller="Discount" asp-action="Apply" method="post">
+                    <div class="input-group">
+                        <input type="text" name="couponCode" class="form-control border-0 p-4" placeholder="Kupon Kodu" style="border-radius: 10px;">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" style="border-radius: 10px;">Kullan</button>
+                        </div>
+                    </div>
+                </form>
+                @if (TempData["CouponError"] != null)
+                {
+                    <div class="alert alert-danger" style="border-radius: 10px;">@TempData["CouponError"]</div>
+                }
+
+                @if (TempData["CouponSuccess"] != null)
+                {
+                    <div class="alert alert-success" style="border-radius: 10px;">@TempData["CouponSuccess"]</div>
+                }
+
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">SEPET ÖZETİ</span></h5>
+
+                @if (Model.HasDiscount)
+                {
+                    <div class="bg-light p-30 mb-5" style="border-radius: 16px;">
+                        <div class="border-bottom pb-2">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h6>Toplam Fiyat</h6>
+                                <h6>@Model.TotalPrice.ToString("N2") ₺</h6>
+                            </div>                           
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <h6 class="font-weight-medium">%@Model.DiscountRate İndirim
+                                    <small class="text-muted ml-1">
+                                        (@Model.DiscountCode)
+                                    </small>
+                                </h6>
+                                <h6 class="text-danger">-@Model.DiscountAmount.ToString("N2") ₺</h6>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-medium">Kargo Ücreti</h6>
+                                <h6 class="font-weight-medium">@Model.ShippingPrice.ToString("N2") ₺</h6>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <div class="d-flex justify-content-between mt-2">
+                                <h5>Ödenecek Toplam Tutar</h5>
+                                <h5 class="text-success">@Model.GrandTotal.ToString("N2") ₺</h5>
+                            </div>
+
+                           @*  <button class="btn btn-block btn-primary font-weight-bold my-3 py-3" style="border-radius: 10px;">
+                                Ödemeyi Tamamla
+                            </button> *@
+                            <a class="btn btn-block btn-primary font-weight-bold my-3 py-3" style="border-radius: 10px;" href="/Order/Index">
+                                Ödemeyi Tamamla
+                            </a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="bg-light p-30 mb-5" style="border-radius: 16px;">
+                        <div class="border-bottom pb-2">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h6>Toplam Fiyat</h6>
+                                <h6>@Model.TotalPrice.ToString("N2") ₺</h6>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-medium">Kargo Ücreti</h6>
+                                <h6 class="font-weight-medium">100,00 ₺</h6>
+                            </div>
+                        </div>
+                        <div class="pt-2">
+                            <div class="d-flex justify-content-between mt-2">
+                                <h5>Ödenecek Toplam Tutar</h5>
+                                <h5>@((Model.TotalPrice + Model.ShippingPrice).ToString("N2")) ₺</h5>
+                            </div>
+                           @*  <button class="btn btn-block btn-primary font-weight-bold my-3 py-3" style="border-radius: 10px;">Ödemeyi Tamamla</button> *@
+                           <a class="btn btn-block btn-primary font-weight-bold my-3 py-3" style="border-radius: 10px;" href="/Order/Index">
+                                Ödemeyi Tamamla
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <form class="mb-30" action="">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-0 p-4" placeholder="Kupon Kodu" style="border-radius: 10px;">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" disabled style="border-radius: 10px;">Kullan</button>
+                        </div>
+                    </div>
+                </form>
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">SEPET ÖZETİ</span></h5>
+                <div class="bg-light p-30 mb-5" style="border-radius: 16px;">
+                    <div class="border-bottom pb-2">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h6>Toplam Fiyat</h6>
+                            <h6>-</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Kargo Ücreti</h6>
+                            <h6 class="font-weight-medium">-</h6>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5>Ödenecek Toplam Tutar</h5>
+                            <h5>-</h5>
+                        </div>
+                        <button class="btn btn-block btn-primary font-weight-bold my-3 py-3" disabled style="border-radius: 10px;">Ödemeyi Tamamla</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Cart End -->
+
+<script>
+    function updateQuantity(productId, change) {
+        fetch('/ShoppingCart/UpdateQuantity', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `productId=${productId}&change=${change}`
+        })
+        .then(() => location.reload());
+    }
+</script>

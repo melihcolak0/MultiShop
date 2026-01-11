@@ -1,0 +1,103 @@
+﻿@model List<ResultSpecialOfferDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary">
+            <i class="fa fa-gift"></i> Özel Teklifler
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-gift"></i> Özel Teklifler</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="chart-box">
+                    <h4>Özel Teklifler'in Listelenmesi</h4>
+                    <p>Özel Teklifler ile ilgili listeleme, ekleme, silme ve güncelleme işlemlerini aşağıdan gerçekleştirebilirsiniz. Tema bütünlüğü için 4 adet aktif özel teklif kullanmalısınız.</p>
+                    <div class="bs-example" data-example-id="hoverable-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Resim</th>
+                                    <th>Başlık</th>
+                                    <th>Alt Başlık</th>
+                                    <th>Durum</th>
+                                    <th>Aktif/Pasif</th>
+                                    <th>Sil</th>
+                                    <th>Güncelle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    count++;
+                                    <tr>
+                                        <th scope="row">@count</th>
+                                        <td>
+                                            <img src="@item.ImageUrl"
+                                                 style="width: 90px; height: 50px; border-radius: 12px; box-shadow: 0 0 6px rgba(0,0,0,0.2); object-fit: cover;" />
+                                        </td>
+                                        <td>@item.Title</td>
+                                        <td>@item.SubTitle</td>
+                                        @if (item.Status)
+                                        {
+                                            <td><span style="background:#28a745; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Aktif</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span style="background:#dc3545; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Pasif</span></td>
+                                        }
+                                        @if (item.Status)
+                                        {
+                                            <td>
+                                                <a href="/Admin/SpecialOffer/ChangeSpecialOfferStatus/@item.SpecialOfferId"
+                                                   class="btn btn-danger btn-rounded btn-sm">
+                                                    <i class="bi bi-x"></i> Pasif Yap
+                                                </a>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <a href="/Admin/SpecialOffer/ChangeSpecialOfferStatus/@item.SpecialOfferId"
+                                                   class="btn btn-success btn-rounded btn-sm">
+                                                    <i class="bi bi-check"></i> Aktif Yap
+                                                </a>
+                                            </td>
+                                        }
+                                        <td>
+                                            <a href="/Admin/SpecialOffer/DeleteSpecialOffer/@item.SpecialOfferId"
+                                               class="btn btn-danger btn-rounded btn-sm">
+                                                <i class="bi bi-trash"></i> Sil
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/SpecialOffer/UpdateSpecialOffer/@item.SpecialOfferId"
+                                               class="btn btn-warning btn-rounded btn-sm">
+                                                <i class="bi bi-pencil-square"></i> Güncelle
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+                        <a href="/Admin/SpecialOffer/CreateSpecialOffer" class="btn btn-primary btn-rounded btn-sm">
+                            <i class="bi bi-plus-circle"></i> Yeni Özel Teklif Ekle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,84 @@
+﻿@model WeatherAPIDTO.Rootobject
+
+@{
+    Layout = null;
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+@functions {
+    string GetWeatherIcon(string weather)
+    {
+        if (string.IsNullOrEmpty(weather))
+            return "fa-cloud";
+
+        weather = weather.ToLower();
+
+        if (weather.Contains("rain"))
+            return "fa-cloud-rain";
+
+        if (weather.Contains("storm"))
+            return "fa-cloud-bolt";
+
+        if (weather.Contains("snow"))
+            return "fa-snowflake";
+
+        if (weather.Contains("sun") || weather.Contains("clear"))
+            return "fa-sun";
+
+        if (weather.Contains("cloud"))
+            return "fa-cloud";
+
+        return "fa-cloud";
+    }
+}
+
+<style>
+    .weather-panel {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: #f5f7fa;
+        padding: 15px;
+        border-radius: 12px;
+        width: 300px;
+    }
+
+    .weather-icon {
+        font-size: 48px;
+        color: #4a90e2;
+    }
+
+    .weather-info h4 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .weather-info p {
+        margin: 3px 0;
+        font-size: 14px;
+        color: #666;
+    }
+
+</style>
+
+<div class="weather-panel">
+    <i class="fa-solid @GetWeatherIcon(Model.data.current_weather) weather-icon"></i>
+
+    <div class="weather-info">
+        <h4>@Model.data.city</h4>
+        <p>@Model.data.current_weather</p>
+        <span>@Model.data.temp °C</span>
+    </div>
+</div>
+
+
+<h2>@Model.data.city</h2>
+
+<p>Hava Durumu: @Model.data.current_weather</p>
+<p>Sıcaklık: @Model.data.temp °C</p>
+<p>Nem: @Model.data.humidity</p>
+<p>Rüzgar: @Model.data.wind</p>
+
+<img src="@Model.data.bg_image" width="400" />

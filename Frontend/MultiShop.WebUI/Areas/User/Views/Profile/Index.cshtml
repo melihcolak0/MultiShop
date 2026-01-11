@@ -1,0 +1,202 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/User/Views/UserLayout/Index.cshtml";
+}
+
+<style>
+    .card-title {
+        font-size: 22px !important;
+        font-weight: 600;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, #420202 0%, #700202 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 16px 16px 0 0;
+        text-align: center;
+        position: relative;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: #223e9c;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+        .profile-avatar i {
+            font-size: 50px;
+            color: white;
+        }
+
+    .profile-name {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .profile-email {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    .info-row {
+        padding: 15px 0;
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        align-items: center;
+    }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+    .info-label {
+        font-size: 14px;
+        color: #6c757d;
+        font-weight: 500;
+        min-width: 140px;
+        display: flex;
+        align-items: center;
+    }
+
+        .info-label i {
+            margin-right: 10px;
+            font-size: 18px;
+            color: #700202;
+        }
+
+    .info-value {
+        font-size: 15px;
+        font-weight: 600;
+        color: #212529;
+        flex: 1;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 10px 20px;
+        border-radius: 8px;
+    }
+
+        .btn i {
+            margin-right: 6px;
+        }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #212529;
+        display: flex;
+        align-items: center;
+    }
+
+        .section-title i {
+            margin-right: 10px;
+            color: #700202;
+        }
+</style>
+
+<div class="content-wrapper">
+    <!-- Profil Kartı -->
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card" style="border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-radius: 16px;">
+                <!-- Profil Header -->
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="mdi mdi-account"></i>
+                    </div>
+                    <h2 class="profile-name">@ViewBag.name @ViewBag.surname</h2>
+                    <p class="profile-email">@("@" + ViewBag.username)</p>
+                </div>
+
+                <!-- Profil Bilgileri -->
+                <div class="card-body" style="padding: 30px;">
+                    <h5 class="section-title">
+                        <i class="mdi mdi-information"></i>
+                        Kişisel Bilgiler
+                    </h5>
+
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="mdi mdi-account-circle"></i>
+                            Adı ve Soyadı
+                        </div>
+                        <div class="info-value">
+                            @ViewBag.name @ViewBag.surname
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="mdi mdi-account-box"></i>
+                            Kullanıcı Adı
+                        </div>
+                        <div class="info-value">
+                            @ViewBag.username
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="mdi mdi-email"></i>
+                            E-posta
+                        </div>
+                        <div class="info-value">
+                            @ViewBag.email
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="mdi mdi-phone"></i>
+                            Telefon
+                        </div>
+                        <div class="info-value">
+                            @ViewBag.phone
+                        </div>
+                    </div>
+
+                    <!-- Aksiyon Butonları -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary flex-fill" onclick="editProfile()" style="background-color:#700202; border-color:#700202">
+                            <i class="mdi mdi-pencil"></i>
+                            Profili Düzenle
+                        </button>
+                        <button class="btn btn-outline-secondary flex-fill" onclick="changePassword()">
+                            <i class="mdi mdi-lock-reset"></i>
+                            Şifre Değiştir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function editProfile() {
+        // Profil düzenleme sayfasına yönlendir
+        window.location.href = '/User/Profile/Edit';
+    }
+
+    function changePassword() {
+        // Şifre değiştirme sayfasına yönlendir
+        window.location.href = '/User/Profile/ChangePassword';
+    }
+</script>

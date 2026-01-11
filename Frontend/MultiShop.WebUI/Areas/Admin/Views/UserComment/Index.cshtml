@@ -1,0 +1,104 @@
+﻿@model List<ResultUserCommentDTO>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h3 class="text-primary">
+            <i class="fa fa-comment"></i> Yorumlar
+        </h3>
+        <ol class="breadcrumb">
+            <li><a href="/Admin/Dashboard/Index"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="active"><i class="fa fa-comment"></i> Yorumlar</li>
+        </ol>
+    </section>
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="chart-box">
+                    <h4>Yorumlar'ın Listelenmesi</h4>
+                    <p>Yorumlar ile ilgili listeleme, ekleme, silme ve güncelleme işlemlerini aşağıdan gerçekleştirebilirsiniz.</p>
+                    <div class="bs-example" data-example-id="hoverable-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Resim</th>
+                                    <th>Kullanıcı</th>
+                                    <th>E-Mail</th>
+                                    <th>Tarih</th>
+                                    <th>Durum</th>
+                                    <th>Aktif/Pasif</th>
+                                    <th>Sil</th>
+                                    <th>Güncelle</th>                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    count++;
+                                    <tr>
+                                        <th scope="row">@count</th>
+                                        <td>
+                                            <img src="@item.ImageUrl"
+                                                 style="width: 90px; height: 50px; border-radius: 12px; box-shadow: 0 0 6px rgba(0,0,0,0.2); object-fit: cover;" />
+                                        </td>
+                                        <td>@item.NameSurname</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.CreatedDate.ToString("dd MMM yy - HH:mm")</td>
+                                        @if (item.Status)
+                                        {
+                                            <td><span style="background:#28a745; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Aktif</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span style="background:#dc3545; color:white; padding:3px 10px; border-radius:20px; font-size:12px;">Pasif</span></td>
+                                        }
+                                        @if (item.Status)
+                                        {
+                                            <td>
+                                                <a href="/Admin/UserComment/ChangeUserCommentStatus/@item.UserCommentId"
+                                                   class="btn btn-danger btn-rounded btn-sm">
+                                                    <i class="bi bi-x"></i> Pasif Yap
+                                                </a>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <a href="/Admin/UserComment/ChangeUserCommentStatus/@item.UserCommentId"
+                                                   class="btn btn-success btn-rounded btn-sm">
+                                                    <i class="bi bi-check"></i> Aktif Yap
+                                                </a>
+                                            </td>
+                                        }
+                                        <td>
+                                            <a href="/Admin/UserComment/DeleteUserComment/@item.UserCommentId"
+                                               class="btn btn-danger btn-rounded btn-sm">
+                                                <i class="bi bi-trash"></i> Sil
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/UserComment/UpdateUserComment/@item.UserCommentId"
+                                               class="btn btn-warning btn-rounded btn-sm">
+                                                <i class="bi bi-pencil-square"></i> Güncelle
+                                            </a>
+                                        </td>                                       
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @* <br />
+                        <a href="/Admin/UserComment/CreateUserComment" class="btn btn-primary btn-rounded btn-sm">
+                            <i class="bi bi-plus-circle"></i> Yeni Yorum Ekle
+                        </a> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

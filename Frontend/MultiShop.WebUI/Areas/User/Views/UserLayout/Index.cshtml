@@ -1,0 +1,161 @@
+﻿
+@{
+    Layout = null;
+
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>MultiShop Kullanıcı Paneli</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="/spica/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="/spica/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="/spica/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="/spica/images/favicon.png" />
+    <!-- Material Design Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@mdi/font@7.2.96/css/materialdesignicons.min.css">
+</head>
+<body>
+    <div class="container-scroller d-flex">      
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item sidebar-category">
+                    <p>Menüler</p>
+                    <span></span>
+                </li>
+                @* <li class="nav-item">
+                    <a class="nav-link" href="pages/forms/basic_elements.html">
+                        <i class="mdi mdi-view-dashboard menu-icon"></i>
+                        <span class="menu-title">Dashboard</span>
+                    </a>
+                </li> *@
+                <li class="nav-item">
+                    <a class="nav-link" href="/User/Profile/Index">
+                        <i class="mdi mdi-account menu-icon"></i>
+                        <span class="menu-title">Profilim</span>
+                    </a>
+                </li>
+               @*  <li class="nav-item">
+                    <a class="nav-link" href="pages/forms/basic_elements.html">
+                        <i class="mdi mdi-cart menu-icon"></i>
+                        <span class="menu-title">Aktif Siparişlerim</span>
+                    </a>
+                </li> *@
+                <li class="nav-item">
+                    <a class="nav-link" href="/User/Order/Index">
+                        <i class="mdi mdi-history menu-icon"></i>
+                        <span class="menu-title">Geçmiş Siparişlerim</span>
+                    </a>
+                </li>
+              @*   <li class="nav-item">
+                    <a class="nav-link" href="pages/forms/basic_elements.html">
+                        <i class="mdi mdi-package-variant menu-icon"></i>
+                        <span class="menu-title">Kargolarım</span>
+                    </a>
+                </li> *@
+                <li class="nav-item">
+                    <a class="nav-link" href="/User/Message/Inbox">
+                        <i class="mdi mdi-email-arrow-left-outline menu-icon"></i>
+                        <span class="menu-title">Gelen Kutusu</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/User/Message/Sendbox">
+                        <i class="mdi mdi-email-fast-outline menu-icon"></i>
+                        <span class="menu-title">Gönderilen Kutusu</span>
+                    </a>
+                </li>
+               @*  <li class="nav-item">
+                    <a class="nav-link" href="pages/forms/basic_elements.html">
+                        <i class="mdi mdi-clipboard-text menu-icon"></i>
+                        <span class="menu-title">Taleplerim</span>
+                    </a>
+                </li> *@
+                <li class="nav-item">
+                    <a class="nav-link" href="/LogIn/LogOut">
+                        <i class="mdi mdi-logout menu-icon"></i>
+                        <span class="menu-title">Çıkış Yap</span>
+                    </a>
+                </li>                
+            </ul>
+        </nav>        
+        <div class="container-fluid page-body-wrapper">            
+            
+            @await Component.InvokeAsync("_NavbarUserLayoutComponent")
+
+            <div class="main-panel">
+
+                @RenderBody()
+
+                <footer class="footer">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © Tüm hakları saklıdır.</span>
+                                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Bootstrapdash.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- base:js -->
+    <script src="/spica/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <script src="/spica/vendors/chart.js/Chart.min.js"></script>
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="/spica/js/off-canvas.js"></script>
+    <script src="/spica/js/hoverable-collapse.js"></script>
+    <script src="/spica/js/template.js"></script>
+    <!-- endinject -->
+    <!-- plugin js for this page -->
+    <!-- End plugin js for this page -->
+    <!-- Custom js for this page-->
+    <script src="js/dashboard.js"></script>
+    <!-- End custom js for this page-->
+
+    <script>
+            function updateTime() {
+            const now = new Date();
+
+            // Türkçe ay isimleri
+            const months = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            const timeString = `${day} ${month} ${year} - ${hours}:${minutes}:${seconds}`;
+
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        // Sayfa yüklendiğinde başlat
+        updateTime();
+
+        // Her saniye güncelle
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>

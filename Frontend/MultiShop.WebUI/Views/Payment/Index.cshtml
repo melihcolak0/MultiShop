@@ -1,0 +1,849 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --primary-yellow: #fbbf24;
+        --primary-yellow-dark: #f59e0b;
+        --primary-yellow-light: #fcd34d;
+        --card-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+        --success-color: #10b981;
+        --text-dark: #1f2937;
+        --text-light: #6b7280;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        /* font-family: 'Outfit', sans-serif; */
+        background: #ffffff;
+        min-height: 100vh;
+    }
+
+    .payment-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .payment-hero {
+        text-align: center;
+        margin-bottom: 50px;
+        animation: fadeInDown 0.8s ease-out;
+    }
+
+        .payment-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-yellow);
+            margin-bottom: 10px;
+        }
+
+        .payment-hero p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+    .payment-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: start;
+    }
+
+    /* Credit Card Section */
+    .card-preview-section {
+        position: sticky;
+        top: 20px;
+    }
+
+    .card-wrapper {
+        perspective: 1000px;
+        width: 100%;
+        max-width: 420px;
+        height: 260px;
+        margin: 0 auto 30px;
+    }
+
+    .card-flip-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+    }
+
+        .card-flip-container.flipped {
+            transform: rotateY(180deg);
+        }
+
+    .credit-card, .credit-card-back {
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        background: var(--card-gradient);
+        padding: 30px;
+        position: absolute;
+        backface-visibility: hidden;
+        box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+        overflow: hidden;
+    }
+
+        .credit-card::before, .credit-card-back::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite linear;
+        }
+
+    .credit-card-back {
+        transform: rotateY(180deg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    @@keyframes shimmer {
+        0%
+
+    {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+
+    }
+
+    .card-chip {
+        width: 50px;
+        height: 40px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+        position: relative;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+        .card-chip::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 35px;
+            height: 25px;
+            border-radius: 4px;
+            background: repeating-linear-gradient( 90deg, #d4af37 0px, #d4af37 2px, #ffd700 2px, #ffd700 4px );
+        }
+
+    .card-number {
+        font-family: 'Space Mono', monospace;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        letter-spacing: 3px;
+        margin-bottom: 25px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        min-height: 1.5rem;
+    }
+
+    .card-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .card-holder, .card-expiry {
+        color: white;
+    }
+
+    .card-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.7;
+        margin-bottom: 5px;
+    }
+
+    .card-value {
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        min-height: 1rem;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .card-brand {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        width: 60px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border-radius: 6px;
+        padding: 6px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+        .card-brand img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+    /* Card Back */
+    .magnetic-stripe {
+        width: 100%;
+        height: 50px;
+        background: #000;
+        margin: -30px -30px 30px -30px;
+    }
+
+    .cvv-section {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+
+    .cvv-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #666;
+        margin-bottom: 8px;
+    }
+
+    .cvv-value {
+        font-family: 'Space Mono', monospace;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #000;
+        letter-spacing: 4px;
+        text-align: right;
+        padding: 10px;
+        background: #f0f0f0;
+        border-radius: 4px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .security-badges {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .security-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-dark);
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+        .security-badge svg {
+            width: 20px;
+            height: 20px;
+            color: var(--success-color);
+        }
+
+    /* Payment Form */
+    .payment-form-section {
+        animation: fadeInRight 0.8s ease-out;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    }
+
+    .form-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        color: var(--text-light);
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 14px 18px;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        font-size: 1rem;
+        /* font-family: 'Outfit', sans-serif; */
+        transition: all 0.3s ease;
+        background: #fafafa;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-yellow);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #9ca3af;
+        }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .card-number-input {
+        font-family: 'Space Mono', monospace;
+        letter-spacing: 2px;
+    }
+
+    .btn-pay {
+        width: 100%;
+        padding: 18px;
+        background: var(--primary-yellow);
+        color: #1f2937;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+        box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-pay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-pay:hover {
+            transform: translateY(-2px);
+            background: var(--primary-yellow-dark);
+            box-shadow: 0 15px 40px rgba(251, 191, 36, 0.4);
+        }
+
+            .btn-pay:hover::before {
+                left: 100%;
+            }
+
+        .btn-pay:active {
+            transform: translateY(0);
+        }
+
+    /* Animations */
+    @@keyframes fadeInDown {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    @@keyframes fadeInLeft {
+        from
+
+    {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    }
+
+    @@keyframes fadeInRight {
+        from
+
+    {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    }
+
+    /* Responsive */
+    @@media (max-width: 968px) {
+        .payment-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .card-preview-section {
+        position: relative;
+        top: 0;
+    }
+
+    .payment-hero h1 {
+        font-size: 2rem;
+    }
+
+    }
+
+    @@media (max-width: 640px) {
+        .form-row
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .form-card {
+        padding: 25px;
+    }
+
+    .card-wrapper {
+        height: 220px;
+    }
+
+    .credit-card, .credit-card-back {
+        height: 220px;
+        padding: 25px;
+    }
+
+    .card-number {
+        font-size: 1.2rem;
+    }
+
+    }
+</style>
+
+<div class="payment-container">
+    <div class="payment-hero">
+        <h1>Güvenli Ödeme</h1>
+        <p>Kart bilgileriniz SSL şifreleme ile korunmaktadır</p>
+    </div>
+
+    <div class="payment-grid">
+        <!-- Credit Card Preview -->
+        <div class="card-preview-section">
+            <div class="card-wrapper">
+                <div class="card-flip-container" id="cardFlipContainer">
+                    <!-- Card Front -->
+                    <div class="credit-card">
+                        <div class="card-chip"></div>
+                        <div class="card-brand" id="cardBrand">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="VISA">
+                        </div>
+                        <div class="card-number" id="displayCardNumber">•••• •••• •••• ••••</div>
+                        <div class="card-details">
+                            <div class="card-holder">
+                                <div class="card-label">Kart Sahibi</div>
+                                <div class="card-value" id="displayCardHolder">AD SOYAD</div>
+                            </div>
+                            <div class="card-expiry">
+                                <div class="card-label">Son Kullanma</div>
+                                <div class="card-value" id="displayExpiry">AA/YY</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Back -->
+                    <div class="credit-card-back">
+                        <div class="magnetic-stripe"></div>
+                        <div class="cvv-section">
+                            <div class="cvv-label">CVV</div>
+                            <div class="cvv-value" id="displayCVV">•••</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="security-badges">
+                <div class="security-badge">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                    SSL Korumalı
+                </div>
+                <div class="security-badge">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                    3D Secure
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Form -->
+        <div class="payment-form-section">
+            <div class="form-card">
+                <h2 class="form-title">Kart Bilgileri</h2>
+                <p class="form-subtitle">Lütfen kart bilgilerinizi eksiksiz giriniz</p>
+
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="cardNumber">Kart Numarası</label>
+                        <input type="text"
+                               class="form-control card-number-input"
+                               id="cardNumber"
+                               placeholder="1234 5678 9012 3456"
+                               maxlength="19"
+                               autocomplete="cc-number">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardHolder">Kart Sahibinin Adı</label>
+                        <input type="text"
+                               class="form-control"
+                               id="cardHolder"
+                               placeholder="AD SOYAD"
+                               style="text-transform: uppercase;"
+                               autocomplete="cc-name">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expiryDate">Son Kullanma Tarihi</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="expiryDate"
+                                   placeholder="AA/YY"
+                                   maxlength="5"
+                                   autocomplete="cc-exp">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cvv">CVV</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="cvv"
+                                   placeholder="123"
+                                   maxlength="3"
+                                   autocomplete="cc-csc">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-pay">
+                        Ödemeyi Tamamla
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Card flip container
+    const cardFlipContainer = document.getElementById('cardFlipContainer');
+
+    // Card Number Formatting and Display
+    const cardNumberInput = document.getElementById('cardNumber');
+    const displayCardNumber = document.getElementById('displayCardNumber');
+    const cardBrand = document.getElementById('cardBrand');
+
+    cardNumberInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\s/g, '');
+        let formattedValue = value.match(/.{1,4}/g)?.join(' ') || '';
+        e.target.value = formattedValue;
+
+        if (value.length > 0) {
+            let displayValue = formattedValue.split('').map((char, index) => {
+                if (char === ' ') return ' ';
+                return char;
+            }).join('');
+
+            // Pad with bullets if less than 16 digits
+            const digitsOnly = value.replace(/\D/g, '');
+            const remaining = 16 - digitsOnly.length;
+            if (remaining > 0) {
+                const bullets = '• '.repeat(Math.ceil(remaining / 4)).trim();
+                displayValue += ' ' + bullets;
+            }
+
+            displayCardNumber.textContent = displayValue;
+        } else {
+            displayCardNumber.textContent = '•••• •••• •••• ••••';
+        }
+    });
+
+    // Card Holder Name Display
+    const cardHolderInput = document.getElementById('cardHolder');
+    const displayCardHolder = document.getElementById('displayCardHolder');
+
+    cardHolderInput.addEventListener('input', function(e) {
+        const value = e.target.value.toUpperCase();
+        displayCardHolder.textContent = value || 'AD SOYAD';
+    });
+
+    // Expiry Date Formatting and Display
+    const expiryDateInput = document.getElementById('expiryDate');
+    const displayExpiry = document.getElementById('displayExpiry');
+
+    expiryDateInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+
+        if (value.length >= 2) {
+            value = value.slice(0, 2) + '/' + value.slice(2, 4);
+        }
+
+        e.target.value = value;
+        displayExpiry.textContent = value || 'AA/YY';
+    });
+
+    // CVV Input and Card Flip
+    const cvvInput = document.getElementById('cvv');
+    const displayCVV = document.getElementById('displayCVV');
+
+    cvvInput.addEventListener('focus', function() {
+        cardFlipContainer.classList.add('flipped');
+    });
+
+    cvvInput.addEventListener('blur', function() {
+        cardFlipContainer.classList.remove('flipped');
+    });
+
+    cvvInput.addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/\D/g, '');
+        displayCVV.textContent = e.target.value || '•••';
+    });
+
+    // Form Submission
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Basic validation
+        const cardNumber = cardNumberInput.value.replace(/\s/g, '');
+        const cardHolder = cardHolderInput.value;
+        const expiryDate = expiryDateInput.value;
+        const cvv = cvvInput.value;
+
+        if (cardNumber.length < 16) {
+            alert('Lütfen geçerli bir kart numarası giriniz');
+            return;
+        }
+
+        if (cardHolder.length < 3) {
+            alert('Lütfen kart sahibinin adını giriniz');
+            return;
+        }
+
+        if (expiryDate.length < 5) {
+            alert('Lütfen son kullanma tarihini giriniz');
+            return;
+        }
+
+        if (cvv.length < 3) {
+            alert('Lütfen CVV kodunu giriniz');
+            return;
+        }
+
+        // Here you would normally send the data to your payment processor
+        alert('Ödeme işlemi başarıyla tamamlandı!');
+    });
+</script>
+
+
+@* <style>
+    .payment-wrapper {
+        min-height: 70vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .credit-card {
+        width: 100%;
+        height: 200px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #343a40, #212529);
+        color: #fff;
+        padding: 20px;
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    .card-number {
+        font-size: 20px;
+        letter-spacing: 3px;
+        margin-top: 40px;
+    }
+
+    .card-name {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        text-transform: uppercase;
+        font-size: 14px;
+    }
+
+    .card-expiry {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-size: 14px;
+    }
+
+    .card-logo {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 28px;
+    }
+</style>
+
+<div class="container payment-wrapper">
+    <div class="col-lg-5">
+        <div class="bg-light p-30" style="border-radius:16px">
+
+            <!-- Kredi Kartı Görseli -->
+            <div class="credit-card">
+                <div class="card-logo">
+                    <i class="fab fa-cc-visa"></i>
+                </div>
+                <div class="card-number" id="cardNumberDisplay">
+                    #### #### #### ####
+                </div>
+                <div class="card-name" id="cardNameDisplay">
+                    Kart Sahibi
+                </div>
+                <div class="card-expiry" id="cardExpiryDisplay">
+                    MM/YY
+                </div>
+            </div>
+
+            <!-- Ödeme Formu -->
+            <form>
+                <div class="form-group">
+                    <label>Kart Numarası</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="19"
+                           placeholder="1234 5678 9012 3456"
+                           oninput="updateCardNumber(this)"
+                           style="border-radius:10px">
+                </div>
+
+                <div class="form-group">
+                    <label>Kart Sahibi</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="AD SOYAD"
+                           oninput="updateCardName(this)"
+                           style="border-radius:10px">
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label>Son Kullanma</label>
+                        <input type="text"
+                               class="form-control"
+                               maxlength="5"
+                               placeholder="MM/YY"
+                               oninput="updateCardExpiry(this)"
+                               style="border-radius:10px">
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                        <label>CVV</label>
+                        <input type="password"
+                               class="form-control"
+                               maxlength="3"
+                               placeholder="***"
+                               style="border-radius:10px">
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-block font-weight-bold py-3 mt-3"
+                        style="border-radius:10px">
+                    Ödemeyi Tamamla
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateCardNumber(input) {
+        let value = input.value.replace(/\D/g, '').substring(0,16);
+        value = value.replace(/(.{4})/g, '$1 ').trim();
+        input.value = value;
+        document.getElementById("cardNumberDisplay").innerText =
+            value || "#### #### #### ####";
+    }
+
+    function updateCardName(input) {
+        document.getElementById("cardNameDisplay").innerText =
+            input.value || "Kart Sahibi";
+    }
+
+    function updateCardExpiry(input) {
+        let value = input.value.replace(/\D/g, '').substring(0,4);
+        if (value.length >= 3) {
+            value = value.substring(0,2) + '/' + value.substring(2);
+        }
+        input.value = value;
+        document.getElementById("cardExpiryDisplay").innerText =
+            value || "MM/YY";
+    }
+</script> *@
