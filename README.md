@@ -345,4 +345,14 @@ konularında **uçtan uca** bir referans çalışmadır.
 
 ### 🖼️ Projeden Ekran Görüntüleri
 ## ➡️ Ana Sayfa
+<div align="center">
+  <img src="awd.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="awdwad.png" alt="image alt">
+</div>
+
+
+
+
 
