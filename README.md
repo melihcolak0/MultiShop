@@ -341,3 +341,8 @@ konularında **uçtan uca** bir referans çalışmadır.
 
 📌 *Gerçek dünya projelerinde karşılaşılabilecek hemen her backend senaryosu bu projede deneyimlenmiştir. Projede eksikler olabilir. Çünkü bu bir eğitim projesidir.*
 
+<br> <br>
+
+### 🖼️ Projeden Ekran Görüntüleri
+## ➡️ Ana Sayfa
+
