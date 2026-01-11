@@ -346,13 +346,124 @@ konularında **uçtan uca** bir referans çalışmadır.
 ### 🖼️ Projeden Ekran Görüntüleri
 ## ➡️ Ana Sayfa
 <div align="center">
-  <img src="awd.png" alt="image alt">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/mainpanelss/screencapture-localhost-7156-Default-Index-2026-01-11-21_43_15.png" alt="image alt">
 </div>
 <div align="center">
-  <img src="awdwad.png" alt="image alt">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/mainpanelss/screencapture-localhost-7156-Products-2026-01-11-21_44_28.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/mainpanelss/screencapture-localhost-7156-Products-ProductDetail-6962d4b9064e5ae00ae4dbe4-2026-01-11-21_50_04.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/mainpanelss/screencapture-localhost-7156-Products-ProductDetail-6962d4b9064e5ae00ae4dbe4-2026-01-11-21_56_10.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/mainpanelss/screencapture-localhost-7156-ShoppingCart-2026-01-11-21_46_57.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/mainpanelss/screencapture-localhost-7156-Order-Index-2026-01-11-21_47_14.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/mainpanelss/screencapture-localhost-7156-Payment-2026-01-11-21_48_12.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/mainpanelss/screencapture-localhost-7156-Contact-Index-2026-01-11-21_44_42.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/mainpanelss/screencapture-localhost-7156-Register-Index-2026-01-11-21_57_42.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/mainpanelss/screencapture-localhost-7156-LogIn-Index-2026-01-11-21_57_27.png" alt="image alt">
 </div>
 
+---
 
+## ➡️ Admin Paneli
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-Dashboard-Index-2026-01-11-21_59_36.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-About-Index-2026-01-11-22_00_27.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-About-CreateAbout-2026-01-11-22_00_35.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-About-UpdateAbout-6925cf348c55eaf48782772b-2026-01-11-22_00_47.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-Category-Index-2026-01-11-22_01_01.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/Ekran%20g%C3%B6r%C3%BCnt%C3%BCs%C3%BC%202026-01-11%20222547.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/Ekran%20g%C3%B6r%C3%BCnt%C3%BCs%C3%BC%202026-01-11%20220153.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/Ekran%20g%C3%B6r%C3%BCnt%C3%BCs%C3%BC%202026-01-11%20220221.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-Slider-Index-2026-01-11-22_03_06.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-SpecialOffer-Index-2026-01-11-22_03_15.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-Feature-Index-2026-01-11-22_03_23.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-UserComment-Index-2026-01-11-22_03_51.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-User-Index-2026-01-11-22_04_02.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-User-GetUserCargoDetails-2026-01-11-22_07_27.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-Order-Index-2026-01-11-22_04_13.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-Order-OrderDetails-4002-2026-01-11-22_07_53.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-Statistic-Index-2026-01-11-22_04_33.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-CargoCompany-Index-2026-01-11-22_04_51.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-CargoCustomer-Index-2026-01-11-22_05_01.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-CargoDetail-Index-2026-01-11-22_05_18.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-CargoOperation-Index-2026-01-11-22_05_38.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-Discount-Index-2026-01-11-22_05_50.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-Message-Index-2026-01-11-22_06_02.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/adminpanelss/screencapture-localhost-7156-Admin-Contact-Index-2026-01-11-22_06_40.png" alt="image alt">
+</div>
 
+---
 
-
+## ➡️ Kullanıcı Paneli
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/userpanelss/screencapture-localhost-7156-User-Profile-Index-2026-01-11-22_08_34.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/userpanelss/screencapture-localhost-7156-User-Order-Index-2026-01-11-22_08_44.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/userpanelss/screencapture-localhost-7156-User-Message-Inbox-2026-01-11-22_09_03.png" alt="image alt">
+</div>
+<div align="center">
+  <img src="https://github.com/melihcolak0/MultiShop/blob/c8a1bf667388491607661fced7514db366b6327e/ss/userpanelss/screencapture-localhost-7156-User-Message-Sendbox-2026-01-11-22_09_19.png" alt="image alt">
+</div>
