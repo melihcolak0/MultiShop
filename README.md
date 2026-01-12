@@ -27,7 +27,7 @@ Projem modern bir e-ticaret platformu olarak microservice mimarisi üzerine kuru
 
 ## 🎯 Teknoloji Detayları
 - 🔥 Backend Framework<br>
-  ⚡ .NET Core / .NET 8+        (.csproj, Minimal APIs, Controllers)
+  ⚡ .NET Core (.NET 6.0)        (.csproj, Minimal APIs, Controllers)
 
 - 🗄️ Veritabanları (Polyglot Persistence)<br>
   🟢 MongoDB                   (Catalog: Products/Categories/Images)<br>
